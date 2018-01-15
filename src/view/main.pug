@@ -7,13 +7,14 @@ html(lang="en")
         meta(name="viewport", content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no")
         style @font-face{font-family:'Material Icons';font-style:normal;font-weight:400;src:local('Material Icons'),local('MaterialIcons-Regular'),url(../fonts/roboto/Roboto.woff2) format('woff2')}.material-icons{font-family:'Material Icons';font-weight:400;font-style:normal;font-size:24px;line-height:1;letter-spacing:normal;text-transform:none;display:inline-block;white-space:nowrap;word-wrap:normal;direction:ltr;-webkit-font-feature-settings:'liga';-webkit-font-smoothing:antialiased}
         +link('/css/bootstrap.min.css')
+        +link('/css/tether.min.css')
         +link('/css/main.min.css')
         block blockCss
         title #{title}
     body
+        if user && user.role == 'admin'
+            include _adminNavBar
         main
-            if user && user.role=='admin'
-                include _adminNavBar
             block blockMain
             .modal.fade#modalAlert(style='color:black')
                 .modal-dialog(role='document')
@@ -41,6 +42,8 @@ html(lang="en")
         block blockJavascript
             +script("/js/socket.io.js")
             +script("/js/jquery.min.js")
+            +script("/js/tether.min.js")
+            +script("/js/bootstrap.min.js")
             script(type='text/javascript')
                 | var $$ = {dev: (location.hostname === 'localhost' || location.hostname === '127.0.0.1')};
                 include ./js/bin/init.min.js

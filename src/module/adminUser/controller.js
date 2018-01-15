@@ -1,5 +1,5 @@
 module.exports = (app, moduleViewPath) => {
-    app.get('/admin(.html)?', function (req, res) {
+    app.get('/adminUser', function (req, res) {
         var options = app.defaultOptions(req);
         if (options.user == null) {
             res.redirect('/login.html');

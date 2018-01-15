@@ -5,5 +5,16 @@ append blockJavascript
     script
         include ./bin/frontend.min.js
 append blockMain
-    .container-fluid
-        | Login
+    img.countdown-image(src='/img/countdown.png')
+    .col-md-6.col-sm-10.align-content-center#loginBox
+        #retrobox1.rounded(style='border:1px solid black; display:inline-block; width:auto')
+            p#loginError(style="color: red;")
+            .form-group.row(style="margin: 4px")
+                label.col-sm-2.col-form-label(style="font-size: large" for='username') Username:
+                .col-sm-10
+                    input#username.form-control-plaintext(type='text', placeholder='Username')
+            .form-group.row(style="margin: 4px")
+                label.col-sm-2.col-form-label(style="font-size: large" for='password') Password:
+                .col-sm-10
+                    input#password.form-control-plaintext(type='password', placeholder='Password')
+            button(type="submit" style="margin: 4px" onclick="$$.login.loginOnclick(); return false;" class="btn btn-primary") Login
