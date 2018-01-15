@@ -4,7 +4,7 @@ module.exports = (app) => {
     app.defaultOptions = (req) => {
         return {
             title: app.title,
-            debug: app.isDebug,
+            isDebug: app.isDebug,
             version: app.version,
             user: req.session.user,
             token: req.sessionID,
