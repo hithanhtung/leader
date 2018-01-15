@@ -12,6 +12,8 @@ html(lang="en")
         title #{title}
     body
         main
+            if user && user.role=='admin'
+                include _adminNavBar
             block blockMain
             .modal.fade#modalAlert(style='color:black')
                 .modal-dialog(role='document')
