@@ -1,0 +1,19 @@
+extends ../../../view/main
+append blockCss
+    +link('/css/md/home.min.css')
+    +link('/css/flipcountdown.min.css')
+append blockJavascript
+    +script('/js/flipcountdown.min.js')
+    script
+        include ./bin/frontend.min.js
+append blockMain
+    img.countdown-image(src='/img/countdown.png')
+    .col-md-6.col-sm-10#tableCountDown
+        #retroclockbox1(style='display:inline-block; width:auto')
+            table
+                tbody
+                    tr
+                        td(style='width:25%') Ngày
+                        td(style='width:25%') Giờ
+                        td(style='width:25%') Phút
+                        td(style='width:25%') Giây

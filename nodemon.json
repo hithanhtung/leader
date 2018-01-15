@@ -1,0 +1,6 @@
+{
+  "ignore": [
+    "framework.js",
+    "bower_components/", "public/", "src/view/", "src/view/js/", "src/module/*/view/"
+  ]
+}

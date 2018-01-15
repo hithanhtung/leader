@@ -1,0 +1,9 @@
+extends ../../../view/main
+append blockCss
+    +link('/css/md/user.min.css?v=#{version}')
+append blockJavascript
+    script
+        include ./bin/frontend.min.js
+append blockMain
+    .container-fluid
+        | User

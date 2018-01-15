@@ -1,0 +1,5 @@
+mixin script(url)
+    script(src = url + '?v=' + version + (debug ? '&t=' + timestamp : ''))
+
+mixin link(url)
+    link(href=url + '?v=' + version + (debug ? '&t=' + timestamp : '') type='text/css' rel='stylesheet' media='screen,projection')
