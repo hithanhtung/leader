@@ -4,6 +4,7 @@ module.exports = function (app) {
         username: String,
         password: String,
         role: String,           // admin, user
+        point: Number,
         active: Boolean
     });
     schema.methods.equalPassword = function(password) {
