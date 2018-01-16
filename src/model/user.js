@@ -1,9 +1,8 @@
 module.exports = function (app) {
-
     var schema = app.db.Schema({
         username: String,
         password: String,
-        role: String,           // admin, user
+        role: String,           // admin, user, mc
         point: Number,
         active: Boolean
     });

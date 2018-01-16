@@ -11,9 +11,12 @@ html(lang="en")
         +link('/css/main.min.css')
         block blockCss
         title #{title}
+        script(type='text/javascript') var $$ = {dev: (location.hostname === 'localhost' || location.hostname === '127.0.0.1')};
     body
         if user && user.role == 'admin'
             include _adminNavBar
+            script(type='text/javascript')
+                include ./js/bin/adminNavBar.min.js
         main
             block blockMain
             .modal.fade#modalAlert(style='color:black')
@@ -37,7 +40,7 @@ html(lang="en")
                         .modal-body
                             p ...
                         .modal-footer
-                            button.btn.btn-primary(type='button') Yes
+                            button.btn.btn-primary.confirmYes(type='button' data-dismiss='modal') Yes
                             button.btn.btn-secondary(type='button' data-dismiss='modal') No
         block blockJavascript
             +script("/js/socket.io.js")
@@ -45,7 +48,6 @@ html(lang="en")
             +script("/js/tether.min.js")
             +script("/js/bootstrap.min.js")
             script(type='text/javascript')
-                | var $$ = {dev: (location.hostname === 'localhost' || location.hostname === '127.0.0.1')};
                 include ./js/bin/init.min.js
                 include ./js/bin/loader.min.js
                 //include ./js/bin/mfupload.min.js

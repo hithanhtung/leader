@@ -26,7 +26,7 @@ $$.alert = function (text) {
 };
 
 $$.confirm = function (title, text, okDone) {
-    $('#buttonConfirmOK').unbind().click(okDone);
+    $('#modalConfirm .confirmYes').unbind().click(okDone);
     $('#modalConfirm .modal-header .modal-title').html(title);
     $('#modalConfirm .modal-body p').html(text);
     $('#modalConfirm').modal('show');
@@ -51,13 +51,6 @@ $$.download = function (uri) {
 $$.isEmail = function (email) {
     var regex = /^([a-zA-Z0-9_.+-])+\@(([a-zA-Z0-9-])+\.)+([a-zA-Z0-9]{2,4})+$/;
     return regex.test(email);
-};
-
-$$.logout = function () {
-    $$.confirm('Logout', 'Are you sure you want to logout?', function () {
-        window.location = '/logout';
-    });
-    return false;
 };
 
 $(document).ready(function () {

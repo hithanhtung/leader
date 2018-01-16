@@ -1,5 +1,4 @@
 module.exports = function (app) {
-
     var schema = app.db.Schema({
         index: Number,
         content: String,
