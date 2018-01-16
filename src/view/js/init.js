@@ -53,6 +53,13 @@ $$.isEmail = function (email) {
     return regex.test(email);
 };
 
+$$.logout = function () {
+    $$.confirm('Logout', 'Are you sure you want to logout?', function () {
+        window.location = '/logout';
+    });
+    return false;
+};
+
 $(document).ready(function () {
     $$.connected = null;
     $$.socket = io();

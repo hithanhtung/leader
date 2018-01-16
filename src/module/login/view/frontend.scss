@@ -20,8 +20,13 @@
   margin: auto;
   text-align: center;
   border: 1px solid gray;
+  background-color: rgba(255, 255, 255, 0.1);
 
   #username, #password {
     width: 100%;
+  }
+
+  .form-group {
+    margin: 4px;
   }
 }

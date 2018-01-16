@@ -1,5 +1,5 @@
 mixin script(url)
-    script(src = url + '?v=' + version + (debug ? '&t=' + timestamp : ''))
+    script(src = url + '?v=' + version + (isDebug ? '&t=' + timestamp : ''))
 
 mixin link(url)
-    link(href=url + '?v=' + version + (debug ? '&t=' + timestamp : '') type='text/css' rel='stylesheet' media='screen,projection')
+    link(href=url + '?v=' + version + (isDebug ? '&t=' + timestamp : '') type='text/css' rel='stylesheet' media='screen,projection')
