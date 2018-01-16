@@ -10,15 +10,18 @@
   overflow: auto;
 }
 
-
 #loginBox {
   width: auto;
   display: inline-block;
   position: fixed;
   top: 60%;
-  bottom: 0;
   left: 0;
   right: 0;
   margin: auto;
   text-align: center;
+  border: 1px solid gray;
+
+  #username, #password {
+    width: 100%;
+  }
 }

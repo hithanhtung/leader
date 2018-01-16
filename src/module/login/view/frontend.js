@@ -1,27 +1,34 @@
 $$.login = {
     init: function () {
-
+        $('#username').focus();
     },
-    loginOnclick: function () {
+
+    loginOnKeyup: function (e) {
+        var char = e.which || e.keyCode;
+        if (char == 13) {
+            $$.login.loginOnClick();
+        }
+    },
+
+    loginOnClick: function () {
         var data = {
-            id: $('#username').val(),
+            id: $('#username').val().trim(),
             password: $('#password').val()
         };
         if (data.id == '') {
-            $('#loginError').html('Username can not empty!');
-            return;
+            $('#loginError').html('Username can not empty!').focus();
+            return false;
         }
-        ;
         if (data.password == '') {
-            $('#loginError').html('Password can not empty!');
-            return;
+            $('#loginError').html('Password can not empty!').focus();
+            return false;
         }
-        ;
+
         $.ajax({
             type: 'post',
             url: '/login',
             data: data,
-            dataType: "JSON",
+            dataType: 'JSON',
             success: function (result) {
                 if (result.error) {
                     $('#loginError').html(result.error);
@@ -36,7 +43,8 @@ $$.login = {
             error: function () {
                 $('#loginError').html('Login failed !');
             }
-        })
+        });
+        return false;
     }
 };
 $(document).ready($$.login.init);

@@ -13,5 +13,10 @@ module.exports = function (app) {
 
     var model = app.db.model('Question', schema);
     app.model.Question = {
+        getAll: function (done) {
+            model.find({}).sort({index: 1}).exec((error, questions) => {
+                done(error ? [] : questions);
+            });
+        },
     };
 };
