@@ -24,12 +24,12 @@ append blockMain
                 .modal-body
                     p#userPasswordModalError(style='color:red')
                     .form-group
-                        label.col-sm-2.control-label(for='newPassword') NewPassword
-                        .col-sm-10
+                        label.col-sm-12.control-label(for='newPassword') New password:
+                        .col-sm-12
                             input.form-control#newPassword(type='password' placeholder='New password' onkeyup='$$.aUser.onModalKeyup(event)')
                     .form-group
-                        label.col-sm-2.control-label(for='confirmNewPassword') ConfirmPassword
-                        .col-sm-10
+                        label.col-sm-12.control-label(for='confirmNewPassword') Confirm password:
+                        .col-sm-12
                             input.form-control#confirmNewPassword(type='password' placeholder='Confirm password' onkeyup='$$.aUser.onModalKeyup(event)')
                 .modal-footer
                     button.btn.btn-danger(type='button' data-dismiss='modal') Close
@@ -44,19 +44,19 @@ append blockMain
                 .modal-body
                     p#userInfoModalError(style='color:red')
                     .form-group
-                        label.col-sm-2.control-label(for='newUsername' style='width:auto') Username:
-                        .col-sm-10
+                        label.col-sm-4.control-label(for='newUsername' style='width:auto') Username:
+                        .col-sm-12
                             input.form-control#newUsername(type='text' placeholder='Username' onkeyup='$$.aUser.onModalKeyup(event)')
                     .form-group
-                        label.col-sm-2.control-label(for='newRole' style='width:auto') Role:
-                        .col-sm-10
+                        label.col-sm-4.control-label(for='newRole' style='width:auto') Role:
+                        .col-sm-12
                             select#newRole(class='form-control')
                                 option(value='user') User
                                 option(value='admin') Admin
-                        .col-sm-10.col-sm-offset-2.checkbox
-                            label.col-sm-2.control-label(for='newActive' style='width:auto; padding-left:0')
-                                input#newActive(type='checkbox' style='margin-right:6px')
-                                | Active
+                    .form-group
+                        .col-sm-8.col-sm-offset-4.checkbox
+                            label.control-label(for='newActive' style='width:auto') Active:&nbsp;
+                            input#newActive(type='checkbox' style='margin-right:6px')
                 .modal-footer
                     button.btn.btn-danger(type='button' data-dismiss='modal') Close
                     button.btn.btn-primary(onclick='$$.aUser.save(); return false' type='button') Save
@@ -71,27 +71,27 @@ append blockMain
                     p#userModalError(style='color:red')
                     .form-group
                         label.col-sm-2.control-label(for='username' style='width:auto') Username:
-                        .col-sm-10
+                        .col-sm-12
                             input.form-control#username(type='text' placeholder='Username' onkeyup='$$.aUser.onModalKeyup(event)')
                     .form-group#passwordBox
                         label.col-sm-2.control-label(for='password' style='width:auto') Password:
-                        .col-sm-10
+                        .col-sm-12
                             input.form-control#password(type='password' placeholder='Password' onkeyup='$$.aUser.onModalKeyup(event)')
                     .form-group#confirmPasswordBox
-                        label.col-sm-2.control-label(for='confirmPassword' style='width:auto') ConfirmPassword:
-                        .col-sm-10
+                        label.col-sm-12.control-label(for='confirmPassword' style='width:auto') Confirm password:
+                        .col-sm-12
                             input.form-control#confirmPassword(type='password' placeholder='Confirm password' onkeyup='$$.aUser.onModalKeyup(event)')
                     .form-group
-                        label.col-sm-2.control-label(for='userRole' style='width:auto') Role:
-                        .col-sm-10
+                        label.col-sm-12.control-label(for='userRole' style='width:auto') Role:
+                        .col-sm-12
                             select#userRole(class='form-control')
                                 option(value='user') User
                                 option(value='admin') Admin
                                 option(value='mc') MC
-                        .col-sm-10.col-sm-offset-2.checkbox
-                            label.col-sm-2.control-label(for='userActive' style='width:auto; padding-left:0')
-                                input#userActive(type='checkbox' style='margin-right:6px')
-                                | Active
+                    .form-group
+                        .col-sm-8.col-sm-offset-4.checkbox
+                            label.control-label(for='userActive' style='width:auto') Active:&nbsp;
+                            input#userActive(type='checkbox' style='margin-right:6px')
                 .modal-footer
                     button.btn.btn-danger(type='button' data-dismiss='modal') Close
                     button.btn.btn-primary#userBtnSave(onclick='$$.aUser.addUser(); return false' type='button') Save

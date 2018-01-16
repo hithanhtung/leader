@@ -1,5 +1,6 @@
 module.exports = function (app) {
     var schema = app.db.Schema({
+        index: Number,
         username: String,
         password: String,
         role: String,           // admin, user, mc
@@ -46,30 +47,36 @@ module.exports = function (app) {
         },
 
         setLockAll: function (done) {
-            model.find({},function (err,totalTeam) {
-                if(err){
+            model.find({}, function (err, totalTeam) {
+                if (err) {
                     done('Set lock all have error !');
-                }else if(totalTeam.length > 0){
-                    var currentStatus = totalTeam[totalTeam.length-1].active;
-                    for(var i = 0 ; i < totalTeam.length ; i++){
+                } else if (totalTeam.length > 0) {
+                    var currentStatus = totalTeam[totalTeam.length - 1].active;
+                    for (var i = 0; i < totalTeam.length; i++) {
                         model.findOneAndUpdate(
                             {_id: totalTeam[i]._id},
-                            {$set: {active:!currentStatus}},
+                            {$set: {active: !currentStatus}},
                             {new: true},
                             function (err) {
-                                if(err) done('Set lock all have error !');
+                                if (err) done('Set lock all have error !');
                                 return;
                             });
                     }
-                    done(err,totalTeam);
-                }else {
+                    done(err, totalTeam);
+                } else {
                     done('Set lock all have error !')
                 }
             })
         },
 
         getAll: function (done) {
-            model.find({}, function (error, users) {
+            model.find({}).sort({index: 1}).exec(function (error, users) {
+                done(error ? [] : users);
+            });
+        },
+
+        getAllUsers: function (done) {
+            model.find({role: 'user'}).sort({index: 1}).exec(function (error, users) {
                 done(error ? [] : users);
             });
         },
