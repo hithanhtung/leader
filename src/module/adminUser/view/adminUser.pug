@@ -7,3 +7,16 @@ append blockJavascript
 append blockMain
     .container-fluid
         | Admin User
+        table.table.table-sm.table-striped
+            thead
+                tr
+                    th(scope='col') #
+                    th(scope='col') Content
+                    th(scope='col') Last
+                    th(scope='col') Action
+            tbody
+                tr
+                    th(scope='row') 1
+                    td Mark
+                    td Otto
+                    td @mdo

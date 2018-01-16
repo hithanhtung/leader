@@ -10,7 +10,7 @@ nav.navbar.navbar-toggleable-md.navbar-light.bg-faded
                 a.nav-link#menuUser(href='/adminUser') User
             li.nav-item
                 a.nav-link#menuQuestion(href='/adminQuestion') Question
-            .dropdown(style='margin-left:100px')
+            .dropdown(style='margin-left:60px; display:none')
                 button#menuRound.btn.btn-secondary.dropdown-toggle.text-primary(type='button', data-toggle='dropdown', aria-haspopup='true', aria-expanded='false') ...
                 .dropdown-menu(aria-labelledby='menuRound')
                     a.dropdown-item(href='#' data-value=0 onclick='$$.selectRound(this); return false') Chưa thi
@@ -21,4 +21,4 @@ nav.navbar.navbar-toggleable-md.navbar-light.bg-faded
                     a.dropdown-item(href='#' data-value=5 onclick='$$.selectRound(this); return false') Kết thúc
             li.nav-item.navbar-toggler-right
                 a.nav-link(href='#' onclick='$$.logout(); return false')
-                    i.large.material-icons lock
+                    i.large.material-icons.text-danger lock

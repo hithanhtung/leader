@@ -37,7 +37,8 @@ $$.updateRound = function () {
         success: function (result) {
             var menuRound = $('#menuRound'),
                 dropdownMenus = menuRound.next().children().eq(result.round);
-            menuRound.attr('data-value', result.round).html(dropdownMenus.html());
+            menuRound.attr('data-value', result.round).html(dropdownMenus.html())
+                .parent().css('display', 'block');
         },
         error: function () {
             console.log('Admin: Error when get round setting!')
