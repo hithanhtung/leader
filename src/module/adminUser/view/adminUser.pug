@@ -1,22 +1,97 @@
 extends ../../../view/main
 append blockCss
-    +link('/css/md/adminUser.min.css?v=#{version}')
+    +link('/css/md/adminUser.min.css')
 append blockJavascript
     script
         include ./bin/frontend.min.js
 append blockMain
-    .container-fluid
-        | Admin User
-        table.table.table-sm.table-striped
-            thead
-                tr
-                    th(scope='col') #
-                    th(scope='col') Content
-                    th(scope='col') Last
-                    th(scope='col') Action
-            tbody
-                tr
-                    th(scope='row') 1
-                    td Mark
-                    td Otto
-                    td @mdo
+    table.table.table-striped.table-hover.table-bordered.table-sm#userTable
+        thead
+            tr
+                th(style='width:auto') #
+                th(style='width:40%; text-align:center') UserName
+                th(style='width:20%; text-align:center') Role
+                th(style='width:20%; text-align:center') Active
+                th(style='width:20%; text-align:center') Actions
+        tbody
+    .modal.fade#userPasswordModal(style='width:auto')
+        .modal-dialog(id='userPasswordModalDialog')
+            .modal-content
+                .modal-header
+                    h4.modal-title#userPasswordModalLabel User password
+                    button.close(type='button' data-dismiss='modal' aria-label='Close')
+                        span(aria-hidden='true') &times;
+                .modal-body
+                    p#userPasswordModalError(style='color:red')
+                    .form-group
+                        label.col-sm-2.control-label(for='newPassword') NewPassword
+                        .col-sm-10
+                            input.form-control#newPassword(type='password' placeholder='New password' onkeyup='$$.aUser.onModalKeyup(event)')
+                    .form-group
+                        label.col-sm-2.control-label(for='confirmNewPassword') ConfirmPassword
+                        .col-sm-10
+                            input.form-control#confirmNewPassword(type='password' placeholder='Confirm password' onkeyup='$$.aUser.onModalKeyup(event)')
+                .modal-footer
+                    button.btn.btn-danger(type='button' data-dismiss='modal') Close
+                    button.btn.btn-primary(onclick='$$.aUser.saveNewPassword(); return false' type='button') Save
+    .modal.fade#userInfoModal(style='width:auto')
+        .modal-dialog
+            .modal-content
+                .modal-header
+                    h4.modal-title#userInfoModalLabel User info
+                    button.close(type='button' data-dismiss='modal' aria-label='Close')
+                        span(aria-hidden='true') &times;
+                .modal-body
+                    p#userInfoModalError(style='color:red')
+                    .form-group
+                        label.col-sm-2.control-label(for='newUsername' style='width:auto') Username:
+                        .col-sm-10
+                            input.form-control#newUsername(type='text' placeholder='Username' onkeyup='$$.aUser.onModalKeyup(event)')
+                    .form-group
+                        label.col-sm-2.control-label(for='newRole' style='width:auto') Role:
+                        .col-sm-10
+                            select#newRole(class='form-control')
+                                option(value='user') User
+                                option(value='admin') Admin
+                        .col-sm-10.col-sm-offset-2.checkbox
+                            label.col-sm-2.control-label(for='newActive' style='width:auto; padding-left:0')
+                                input#newActive(type='checkbox' style='margin-right:6px')
+                                | Active
+                .modal-footer
+                    button.btn.btn-danger(type='button' data-dismiss='modal') Close
+                    button.btn.btn-primary(onclick='$$.aUser.save(); return false' type='button') Save
+    .modal.fade#userModal(style='width:auto')
+        .modal-dialog
+            .modal-content
+                .modal-header
+                    h4.modal-title#userModalLabel User
+                    button.close(type='button' data-dismiss='modal' aria-label='Close')
+                        span(aria-hidden='true') &times;
+                .modal-body
+                    p#userModalError(style='color:red')
+                    .form-group
+                        label.col-sm-2.control-label(for='username' style='width:auto') Username:
+                        .col-sm-10
+                            input.form-control#username(type='text' placeholder='Username' onkeyup='$$.aUser.onModalKeyup(event)')
+                    .form-group#passwordBox
+                        label.col-sm-2.control-label(for='password' style='width:auto') Password:
+                        .col-sm-10
+                            input.form-control#password(type='password' placeholder='Password' onkeyup='$$.aUser.onModalKeyup(event)')
+                    .form-group#confirmPasswordBox
+                        label.col-sm-2.control-label(for='confirmPassword' style='width:auto') ConfirmPassword:
+                        .col-sm-10
+                            input.form-control#confirmPassword(type='password' placeholder='Confirm password' onkeyup='$$.aUser.onModalKeyup(event)')
+                    .form-group
+                        label.col-sm-2.control-label(for='userRole' style='width:auto') Role:
+                        .col-sm-10
+                            select#userRole(class='form-control')
+                                option(value='user') User
+                                option(value='admin') Admin
+                                option(value='mc') MC
+                        .col-sm-10.col-sm-offset-2.checkbox
+                            label.col-sm-2.control-label(for='userActive' style='width:auto; padding-left:0')
+                                input#userActive(type='checkbox' style='margin-right:6px')
+                                | Active
+                .modal-footer
+                    button.btn.btn-danger(type='button' data-dismiss='modal') Close
+                    button.btn.btn-primary#userBtnSave(onclick='$$.aUser.addUser(); return false' type='button') Save

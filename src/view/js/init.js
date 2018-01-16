@@ -53,6 +53,15 @@ $$.isEmail = function (email) {
     return regex.test(email);
 };
 
+$$.getRow = function (item, level) {
+    item = $(item);
+    while (level > 0) {
+        item = item.parent();
+        level--;
+    }
+    return item;
+};
+
 $(document).ready(function () {
     $$.connected = null;
     $$.socket = io();

@@ -6,7 +6,7 @@ module.exports = function (app) {
         point: Number,
         active: Boolean
     });
-    schema.methods.equalPassword = function(password) {
+    schema.methods.equalPassword = function (password) {
         return app.crypt.compareSync(password, this.password);
     };
 
@@ -18,8 +18,9 @@ module.exports = function (app) {
                     model.remove({username: 'admin'}, function () {
                         model.create({
                             username: 'admin',
-                            password: app.model.User.hashPassword('12345678'),
+                            password: '12345678',
                             role: 'admin',
+                            point: 0,
                             active: true
                         });
                     });
@@ -32,6 +33,7 @@ module.exports = function (app) {
                 if (error != null || user != null) {
                     done(null);
                 } else {
+                    data.password = app.model.User.hashPassword(data.password);
                     model.create(data, function (error, user) {
                         done(error ? null : user);
                     });
@@ -43,6 +45,29 @@ module.exports = function (app) {
             model.findOneAndUpdate({_id: id}, {$set: changes}, {new: true}, done);
         },
 
+        setLockAll: function (done) {
+            model.find({},function (err,totalTeam) {
+                if(err){
+                    done('Set lock all have error !');
+                }else if(totalTeam.length > 0){
+                    var currentStatus = totalTeam[totalTeam.length-1].active;
+                    for(var i = 0 ; i < totalTeam.length ; i++){
+                        model.findOneAndUpdate(
+                            {_id: totalTeam[i]._id},
+                            {$set: {active:!currentStatus}},
+                            {new: true},
+                            function (err) {
+                                if(err) done('Set lock all have error !');
+                                return;
+                            });
+                    }
+                    done(err,totalTeam);
+                }else {
+                    done('Set lock all have error !')
+                }
+            })
+        },
+
         getAll: function (done) {
             model.find({}, function (error, users) {
                 done(error ? [] : users);
@@ -51,7 +76,7 @@ module.exports = function (app) {
 
         deleteById: function (ids, done) {
             model.remove({_id: {$in: ids.split(',')}}, function (error) {
-                done(error == null);
+                done(error);
             });
         },
 
