@@ -66,13 +66,13 @@ $$.admin = {
                 dataType: 'JSON',
                 success: function (result) {
                     if (result.error) {
-                        console.log(result.error);
+                        alert(result.error);
                     } else {
                         menuRound.attr('data-value', roundValue).html(sender.html());
                     }
                 },
                 error: function () {
-                    console.log('Admin: Error when get round setting!')
+                    alert('Admin: Error when get round setting!')
                 }
             });
         });

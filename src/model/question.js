@@ -54,6 +54,10 @@ module.exports = (app) => {
             });
         },
 
+        getByIndex: (index, done) => {
+            model.findOne({index: index}, done);
+        },
+
         deleteById: (ids, done)=> {
             model.remove({_id: {$in: ids.split(',')}}, (error) => {
                 done(error);
@@ -63,6 +67,7 @@ module.exports = (app) => {
         update: (id, changes, done) => {
             model.findOneAndUpdate({_id: id}, {$set: changes}, {new: true}, done);
         },
+
         moveUp: (id, status, done) => {
             console.log(status);
             model.findOne({_id: id}, (error, question) => {

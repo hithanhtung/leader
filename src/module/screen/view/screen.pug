@@ -5,5 +5,18 @@ append blockJavascript
     script
         include ./bin/frontend.min.js
 append blockMain
-    .container-fluid
-        | Screen
+    #round1.round.container-fluid
+        #questionContainer
+            p#questionContent
+            p#answerA
+            p#answerB
+            p#answerC
+            p#answerD
+        #pointContainer
+            | Point
+    #round2.round
+        | Vòng Thủ lĩnh tài năng
+    #round3.round
+        | Vòng Thủ lĩnh nhạy bén
+    #round4.round
+        | Vòng Tôi là thủ lĩnh

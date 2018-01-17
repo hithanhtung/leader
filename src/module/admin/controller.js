@@ -107,7 +107,29 @@ module.exports = (app, moduleViewPath) => {
                     });
                 }
 
-                res.send({action: action, questionIndex: questionIndex});
+                var options = app.defaultOptions(req),
+                    result = {action: action, questionIndex: questionIndex};
+                app.model.Question.getByIndex(questionIndex, (error, question) => {
+                    if (error == null && question != null) {
+                        result.question = {
+                            index: question.index,
+                            content: question.content,
+                            answerA: question.answerA,
+                            answerB: question.answerB,
+                            answerC: question.answerC,
+                            answerD: question.answerD,
+                            clipUrl: question.clipUrl
+                        };
+                        if (options.user) {
+                            if (options.user.role == 'admin' || options.user.role == 'mc') {
+                                result.question = question;
+                            } else if (action == 'result') {
+                                result.result = question.result;
+                            }
+                        }
+                    }
+                    res.send(result);
+                });
             });
         });
     });
@@ -127,8 +149,30 @@ module.exports = (app, moduleViewPath) => {
                                 if (error) {
                                     res.send({error: 'Save question state has errors!'});
                                 } else {
+                                    var result = {action: action, questionIndex: questionIndex};
                                     //TODO: do action => send, show, start, pause, restart, result
-                                    app.io.emit('round1Do', {action: action, questionIndex: questionIndex});
+                                    if (action == 'send') {
+                                        app.model.Question.getByIndex(questionIndex, (error, question) => {
+                                            if (error == null && question) {
+                                                result.question = {
+                                                    index: question.index,
+                                                    content: question.content,
+                                                    answerA: question.answerA,
+                                                    answerB: question.answerB,
+                                                    answerC: question.answerC,
+                                                    answerD: question.answerD,
+                                                    clipUrl: question.clipUrl
+                                                };
+                                                app.io.emit('round1Do', result);
+                                            }
+                                        });
+                                    } else if (action == 'show') {
+                                        app.io.emit('round1Do', result);
+                                    } else {
+                                        //TODO: delete
+                                        app.io.emit('round1Do', result);
+                                    }
+
                                     res.send({error: null});
                                 }
                             });
