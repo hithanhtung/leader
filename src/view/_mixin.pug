@@ -3,3 +3,28 @@ mixin script(url)
 
 mixin link(url)
     link(href=url + '?v=' + version + (isDebug ? '&t=' + timestamp : '') type='text/css' rel='stylesheet' media='screen,projection')
+
+mixin addUser(index)
+    td(style='width:20%')
+        span.badge.badge-pill.badge-success(id='userStatus' + index style='position:absolute') #{index}
+        if (index < 10)
+            img(src='/img/user/0' + index + '.png')
+        else
+
+mixin addRound1Question(index)
+    td(data-value=index)
+        a.text-warning(href='#' onclick='$$.admin.round1Do(this, "send"); return false')
+            i.material-icons present_to_all
+        | #{index}
+        a.text-danger(href='#' onclick='$$. < 10admin.round1Do(this, "show"); return false')
+            i.material-icons remove_red_eye
+        br
+        a.text-primary(href='#' onclick='$$.admin.round1Do(this, "start"); return false')
+            i.material-icons play_circle_outline
+        a.text-success(href='#' onclick='$$.admin.round1Do(this, "pause"); return false')
+            i.material-icons pause_circle_outline
+        a.text-info(href='#' onclick='$$.admin.round1Do(this, "restart"); return false')
+            i.material-icons refresh
+        br
+        a.text-danger(href='#' onclick='$$.admin.round1Do(this, "result"); return false')
+            i.material-icons report

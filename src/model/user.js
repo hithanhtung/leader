@@ -1,6 +1,5 @@
 module.exports = function (app) {
     var schema = app.db.Schema({
-        index: Number,
         username: String,
         password: String,
         role: String,           // admin, user, mc
@@ -70,13 +69,13 @@ module.exports = function (app) {
         },
 
         getAll: function (done) {
-            model.find({}).sort({index: 1}).exec(function (error, users) {
+            model.find({}).sort({username: 1}).exec(function (error, users) {
                 done(error ? [] : users);
             });
         },
 
         getAllUsers: function (done) {
-            model.find({role: 'user'}).sort({index: 1}).exec(function (error, users) {
+            model.find({role: 'user'}).sort({username: 1}).exec(function (error, users) {
                 done(error ? [] : users);
             });
         },

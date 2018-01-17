@@ -39,4 +39,53 @@ module.exports = (app, moduleViewPath) => {
             res.send({error: 'Insufficient privileges!'});
         }
     });
+
+    app.get('/admin/round1/state', (req, res) => {
+        app.model.Setting.getByKey('round1Action', (action) => {
+            if (action == null) {
+                action = '';
+                app.model.Setting.create({key: 'round1Action', value: action}, () => {
+                });
+
+                app.model.Setting.getByKey('round1QuestionIndex', (questionIndex) => {
+                    if (questionIndex == null) {
+                        questionIndex = 1;
+                        app.model.Setting.create({key: 'round1QuestionIndex', value: questionIndex}, () => {
+                        });
+                    }
+
+                    res.send({action: action, questionIndex: questionIndex});
+                });
+            }
+        });
+    });
+    app.put('/admin/round1/:action/:questionIndex', (req, res) => {
+        var options = app.defaultOptions(req),
+            action = req.params.action,
+            questionIndex = req.params.questionIndex;
+        if (options.user && options.user.role == 'admin') {
+            app.model.Setting.getByKey('round', (roundIndex) => {
+                if (roundIndex == 1) {
+                    app.model.Setting.create({key: 'round1QuestionIndex', value: questionIndex}, (error) => {
+                        if (error) {
+                            res.send({error: 'Save question state has errors!'});
+                        } else {
+                            app.model.Setting.create({key: 'round1Action', value: action}, (error) => {
+                                if (error) {
+                                    res.send({error: 'Save question state has errors!'});
+                                } else {
+                                    app.io.emit('round1Do', {action: action, questionIndex: questionIndex});
+                                    res.send({error: null});
+                                }
+                            });
+                        }
+                    });
+                } else {
+                    res.send({error: 'Invalid round!'});
+                }
+            });
+        } else {
+            res.send({error: 'Insufficient privileges!'});
+        }
+    });
 };

@@ -133,7 +133,7 @@ $$.aUser = {
             error: function () {
                 alert('Error: Lock all user has errors!');
             }
-        })
+        });
     },
 
     saveNewPassword: function () {

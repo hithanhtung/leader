@@ -6,36 +6,81 @@ append blockJavascript
         include ./bin/frontend.min.js
 append blockMain
     .container-fluid
-        #accordion(role='tablist', aria-multiselectable='true')
+        #accordion(role='tablist' aria-multiselectable='true')
+            table.table.table-bordered.table-sm#userTable
+                tbody
+                    tr
+                        +addUser(1)
+                        td(style='width:20%')
+                            img(src='/img/user/02.png')
+                        td(style='width:20%')
+                            img(src='/img/user/03.png')
+                        td(style='width:20%')
+                            img(src='/img/user/04.png')
+                        td(style='width:20%')
+                            img(src='/img/user/05.png')
+                    tr
+                        td 1
+                        td 2
+                        td 3
+                        td 4
+                        td 5
+                    tr
+                        td(colspan=5) &nbsp;
+                    tr
+                        td
+                            img(src='/img/user/06.png')
+                        td
+                            img(src='/img/user/07.png')
+                        td
+                            img(src='/img/user/08.png')
+                        td
+                            img(src='/img/user/09.png')
+                        td
+                            img(src='/img/user/10.png')
+                    tr
+                        td 6
+                        td 7
+                        td 8
+                        td 9
+                        td 10
             .card
                 #heading1.card-header(role='tab')
-                    h5.mb-0
-                        a(data-toggle='collapse', data-parent='#accordion', href='#collapse1', aria-expanded='true', aria-controls='collapse1')
-                            | THỦ LĨNH TRÍ TUỆ
-                #collapse1.collapse.show(role='tabpanel', aria-labelledby='heading1')
+                    a(data-toggle='collapse' data-parent='#accordion' href='#collapse1' aria-expanded='true' aria-controls='collapse1')
+                        | THỦ LĨNH TRÍ TUỆ
+                    span.float-right#round1QuestionIndex
+                #collapse1.collapse.show(role='tabpanel' aria-labelledby='heading1')
                     .card-block
-                        | Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
+                        p#round1Status.text-primary
+                        table.table.table-bordered.table-sm#round1Table
+                            tbody
+                                tr
+                                    - for (var i = 1; i <= 10; i++)
+                                        +addRound1Question(i)
+                                tr
+                                    - for (var i = 11; i <= 20; i++)
+                                        +addRound1Question(i)
+                                tr
+                                    - for (var i = 21; i <= 25; i++)
+                                        +addRound1Question(i)
             .card
                 #heading2.card-header(role='tab')
-                    h5.mb-0
-                        a.collapsed(data-toggle='collapse', data-parent='#accordion', href='#collapse2', aria-expanded='false', aria-controls='collapse2')
-                            | THỦ LĨNH TÀI NĂNG
+                    a.collapsed(data-toggle='collapse', data-parent='#accordion', href='#collapse2', aria-expanded='false', aria-controls='collapse2')
+                        | THỦ LĨNH TÀI NĂNG
                 #collapse2.collapse(role='tabpanel', aria-labelledby='heading2')
                     .card-block
-                        | Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
+                        | TODO 2
             .card
                 #heading3.card-header(role='tab')
-                    h5.mb-0
-                        a.collapsed(data-toggle='collapse', data-parent='#accordion', href='#collapse3', aria-expanded='false', aria-controls='collapse3')
-                            | THỦ LĨNH NHẠY BÉN
+                    a.collapsed(data-toggle='collapse', data-parent='#accordion', href='#collapse3', aria-expanded='false', aria-controls='collapse3')
+                        | THỦ LĨNH NHẠY BÉN
                 #collapse3.collapse(role='tabpanel', aria-labelledby='heading3')
                     .card-block
-                        | Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
+                        | TODO 3
             .card
                 #heading4.card-header(role='tab')
-                    h5.mb-0
-                        a.collapsed(data-toggle='collapse', data-parent='#accordion', href='#collapse4', aria-expanded='false', aria-controls='collapse4')
-                            | TÔI LÀ THỦ LĨNH
+                    a.collapsed(data-toggle='collapse', data-parent='#accordion', href='#collapse4', aria-expanded='false', aria-controls='collapse4')
+                        | TÔI LÀ THỦ LĨNH
                 #collapse4.collapse(role='tabpanel', aria-labelledby='heading4')
                     .card-block
-                        | Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
+                        | TODO 4

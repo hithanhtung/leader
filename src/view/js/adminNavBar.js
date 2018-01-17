@@ -28,7 +28,7 @@ $$.selectRound = function (sender) {
     });
 };
 
-$$.updateRound = function () {
+$$.updateRound = function (done) {
     $.ajax({
         type: 'get',
         url: '/state/round',
@@ -39,9 +39,17 @@ $$.updateRound = function () {
                 dropdownMenus = menuRound.next().children().eq(result.round);
             menuRound.attr('data-value', result.round).html(dropdownMenus.html())
                 .parent().css('display', 'block');
+
+            if (done) {
+                done(result.round);
+            }
         },
         error: function () {
             console.log('Admin: Error when get round setting!')
         }
     });
 };
+
+$(document).ready(function () {
+    $('main').css('margin-top', '60px');
+});

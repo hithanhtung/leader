@@ -15,8 +15,6 @@ html(lang="en")
     body
         if user && user.role == 'admin'
             include _adminNavBar
-            script(type='text/javascript')
-                include ./js/bin/adminNavBar.min.js
         main
             block blockMain
             .modal.fade#modalAlert(style='color:black')
@@ -48,6 +46,8 @@ html(lang="en")
             +script("/js/tether.min.js")
             +script("/js/bootstrap.min.js")
             script(type='text/javascript')
+                if user && user.role == 'admin'
+                    include ./js/bin/adminNavBar.min.js
                 include ./js/bin/init.min.js
                 include ./js/bin/loader.min.js
                 //include ./js/bin/mfupload.min.js

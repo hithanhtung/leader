@@ -62,6 +62,10 @@ $$.getRow = function (item, level) {
     return item;
 };
 
+$$.capitalizeFirstLetter = function (str) {
+    return str.charAt(0).toUpperCase() + str.slice(1);
+};
+
 $(document).ready(function () {
     $$.connected = null;
     $$.socket = io();
