@@ -69,24 +69,36 @@ module.exports = (app, moduleViewPath) => {
         var options = app.defaultOptions(req),
             action = req.params.action,
             questionIndex = req.params.questionIndex;
+
         if (options.user && options.user.role == 'admin') {
             app.model.Setting.getByKey('round', (roundIndex) => {
                 if (roundIndex == 1) {
-                    app.model.Setting.update({key: 'round1QuestionIndex', value: questionIndex}, (error) => {
-                        if (error) {
-                            res.send({error: 'Save question state has errors!'});
-                        } else {
-                            app.model.Setting.update({key: 'round1Action', value: action}, (error) => {
-                                if (error) {
-                                    res.send({error: 'Save question state has errors!'});
-                                } else {
-                                    //TODO: do action
-                                    app.io.emit('round1Do', {action: action, questionIndex: questionIndex});
-                                    res.send({error: null});
-                                }
-                            });
-                        }
-                    });
+                    var updateRound1Action = () => {
+                        app.model.Setting.update({key: 'round1Action', value: action}, (error) => {
+                            if (error) {
+                                res.send({error: 'Save question state has errors!'});
+                            } else {
+                                //TODO: do action => send, show, start, pause, restart, result, hide
+                                app.io.emit('round1Do', {action: action, questionIndex: questionIndex});
+                                res.send({error: null});
+                            }
+                        });
+                    };
+
+                    if (action == 'hide') {
+                        app.model.Setting.getByKey('round1QuestionIndex', (index) => {
+                            questionIndex = index;
+                            updateRound1Action();
+                        });
+                    } else {
+                        app.model.Setting.update({key: 'round1QuestionIndex', value: questionIndex}, (error) => {
+                            if (error) {
+                                res.send({error: 'Save question state has errors!'});
+                            } else {
+                                updateRound1Action();
+                            }
+                        });
+                    }
                 } else {
                     res.send({error: 'Invalid round!'});
                 }

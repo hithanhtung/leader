@@ -3,6 +3,7 @@ append blockCss
     +link('/css/md/admin.min.css')
 append blockJavascript
     script
+        | $$.userId = 0;
         include ./bin/frontend.min.js
 append blockMain
     | MC

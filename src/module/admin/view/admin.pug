@@ -4,6 +4,23 @@ append blockCss
 append blockJavascript
     script
         include ./bin/frontend.min.js
+mixin addRound1Question(index)
+    td(data-value=index)
+        p.float-left(style='margin-left:6px') #{index}
+        a.text-warning(href='#' onclick='$$.admin.round1Do(this, "send"); return false')
+            i.material-icons backup
+        a.text-danger(href='#' onclick='$$.admin.round1Do(this, "show"); return false')
+            i.material-icons remove_red_eye
+        br
+        a.text-primary(href='#' onclick='$$.admin.round1Do(this, "start"); return false')
+            i.material-icons play_circle_outline
+        a.text-success(href='#' onclick='$$.admin.round1Do(this, "pause"); return false')
+            i.material-icons pause_circle_outline
+        a.text-info(href='#' onclick='$$.admin.round1Do(this, "restart"); return false')
+            i.material-icons refresh
+        br
+        a.text-danger(href='#' onclick='$$.admin.round1Do(this, "result"); return false')
+            i.material-icons report
 append blockMain
     #adminContainer.container-fluid(role='tablist' aria-multiselectable='true')
         table.table.table-bordered.table-sm#userTable
@@ -27,7 +44,9 @@ append blockMain
             #heading1.card-header(role='tab')
                 a(data-toggle='collapse' data-parent='#adminContainer' href='#collapse1' aria-expanded='true' aria-controls='collapse1')
                     | THỦ LĨNH TRÍ TUỆ
-                span.float-right#round1QuestionIndex
+                a.float-right.text-primary(href='#' onclick='$$.admin.round1Do(this, "hide"); return false')
+                    i.material-icons laptop
+                span.float-right#round1QuestionIndex(style='margin-right:30px')
             #collapse1.collapse.show(role='tabpanel' aria-labelledby='heading1')
                 .card-block
                     p#round1Status.text-primary
