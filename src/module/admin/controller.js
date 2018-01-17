@@ -12,12 +12,16 @@ module.exports = (app, moduleViewPath) => {
         }
     });
 
+    app.get('/state/online', (req, res) => {
+        res.send(app.online);
+    });
+
     app.get('/state/round', (req, res) => {
         app.model.Setting.getByKey('round', (value) => {
             if (value) {
                 res.send({round: value});
             } else {
-                app.model.Setting.create({key: 'round', value: 0}, () => {
+                app.model.Setting.update({key: 'round', value: 0}, () => {
                     res.send({round: 0});
                 });
             }
@@ -44,19 +48,19 @@ module.exports = (app, moduleViewPath) => {
         app.model.Setting.getByKey('round1Action', (action) => {
             if (action == null) {
                 action = '';
-                app.model.Setting.create({key: 'round1Action', value: action}, () => {
-                });
-
-                app.model.Setting.getByKey('round1QuestionIndex', (questionIndex) => {
-                    if (questionIndex == null) {
-                        questionIndex = 1;
-                        app.model.Setting.create({key: 'round1QuestionIndex', value: questionIndex}, () => {
-                        });
-                    }
-
-                    res.send({action: action, questionIndex: questionIndex});
+                app.model.Setting.update({key: 'round1Action', value: action}, () => {
                 });
             }
+
+            app.model.Setting.getByKey('round1QuestionIndex', (questionIndex) => {
+                if (questionIndex == null) {
+                    questionIndex = 1;
+                    app.model.Setting.update({key: 'round1QuestionIndex', value: questionIndex}, () => {
+                    });
+                }
+
+                res.send({action: action, questionIndex: questionIndex});
+            });
         });
     });
     app.put('/admin/round1/:action/:questionIndex', (req, res) => {
@@ -66,14 +70,15 @@ module.exports = (app, moduleViewPath) => {
         if (options.user && options.user.role == 'admin') {
             app.model.Setting.getByKey('round', (roundIndex) => {
                 if (roundIndex == 1) {
-                    app.model.Setting.create({key: 'round1QuestionIndex', value: questionIndex}, (error) => {
+                    app.model.Setting.update({key: 'round1QuestionIndex', value: questionIndex}, (error) => {
                         if (error) {
                             res.send({error: 'Save question state has errors!'});
                         } else {
-                            app.model.Setting.create({key: 'round1Action', value: action}, (error) => {
+                            app.model.Setting.update({key: 'round1Action', value: action}, (error) => {
                                 if (error) {
                                     res.send({error: 'Save question state has errors!'});
                                 } else {
+                                    //TODO: do action
                                     app.io.emit('round1Do', {action: action, questionIndex: questionIndex});
                                     res.send({error: null});
                                 }

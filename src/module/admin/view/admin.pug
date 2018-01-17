@@ -5,82 +5,61 @@ append blockJavascript
     script
         include ./bin/frontend.min.js
 append blockMain
-    .container-fluid
-        #accordion(role='tablist' aria-multiselectable='true')
-            table.table.table-bordered.table-sm#userTable
-                tbody
-                    tr
-                        +addUser(1)
-                        td(style='width:20%')
-                            img(src='/img/user/02.png')
-                        td(style='width:20%')
-                            img(src='/img/user/03.png')
-                        td(style='width:20%')
-                            img(src='/img/user/04.png')
-                        td(style='width:20%')
-                            img(src='/img/user/05.png')
-                    tr
-                        td 1
-                        td 2
-                        td 3
-                        td 4
-                        td 5
-                    tr
-                        td(colspan=5) &nbsp;
-                    tr
-                        td
-                            img(src='/img/user/06.png')
-                        td
-                            img(src='/img/user/07.png')
-                        td
-                            img(src='/img/user/08.png')
-                        td
-                            img(src='/img/user/09.png')
-                        td
-                            img(src='/img/user/10.png')
-                    tr
-                        td 6
-                        td 7
-                        td 8
-                        td 9
-                        td 10
-            .card
-                #heading1.card-header(role='tab')
-                    a(data-toggle='collapse' data-parent='#accordion' href='#collapse1' aria-expanded='true' aria-controls='collapse1')
-                        | THỦ LĨNH TRÍ TUỆ
-                    span.float-right#round1QuestionIndex
-                #collapse1.collapse.show(role='tabpanel' aria-labelledby='heading1')
-                    .card-block
-                        p#round1Status.text-primary
-                        table.table.table-bordered.table-sm#round1Table
-                            tbody
-                                tr
-                                    - for (var i = 1; i <= 10; i++)
-                                        +addRound1Question(i)
-                                tr
-                                    - for (var i = 11; i <= 20; i++)
-                                        +addRound1Question(i)
-                                tr
-                                    - for (var i = 21; i <= 25; i++)
-                                        +addRound1Question(i)
-            .card
-                #heading2.card-header(role='tab')
-                    a.collapsed(data-toggle='collapse', data-parent='#accordion', href='#collapse2', aria-expanded='false', aria-controls='collapse2')
-                        | THỦ LĨNH TÀI NĂNG
-                #collapse2.collapse(role='tabpanel', aria-labelledby='heading2')
-                    .card-block
-                        | TODO 2
-            .card
-                #heading3.card-header(role='tab')
-                    a.collapsed(data-toggle='collapse', data-parent='#accordion', href='#collapse3', aria-expanded='false', aria-controls='collapse3')
-                        | THỦ LĨNH NHẠY BÉN
-                #collapse3.collapse(role='tabpanel', aria-labelledby='heading3')
-                    .card-block
-                        | TODO 3
-            .card
-                #heading4.card-header(role='tab')
-                    a.collapsed(data-toggle='collapse', data-parent='#accordion', href='#collapse4', aria-expanded='false', aria-controls='collapse4')
-                        | TÔI LÀ THỦ LĨNH
-                #collapse4.collapse(role='tabpanel', aria-labelledby='heading4')
-                    .card-block
-                        | TODO 4
+    #adminContainer.container-fluid(role='tablist' aria-multiselectable='true')
+        table.table.table-bordered.table-sm#userTable
+            tbody
+                - for (var index = 1; index <= 10; index++)
+                    if (index % 5 == 1)
+                        tr
+                    td(style='width:20%')
+                        span.badge.badge-pill.badge-default(id='userStatus' + index style='position:absolute') #{index}
+                        if (index < 10)
+                            img(src='/img/user/0' + index + '.png')
+                        else
+                            img(src='/img/user/' + index + '.png')
+                        span.badge.badge-pill.badge-primary(id='userPoint' + index style='position:absolute') #{index}
+                        .point-box
+                            | Point
+                    if (index == 5)
+                        tr
+                            td(colspan=5) &nbsp;
+        .card
+            #heading1.card-header(role='tab')
+                a(data-toggle='collapse' data-parent='#adminContainer' href='#collapse1' aria-expanded='true' aria-controls='collapse1')
+                    | THỦ LĨNH TRÍ TUỆ
+                span.float-right#round1QuestionIndex
+            #collapse1.collapse.show(role='tabpanel' aria-labelledby='heading1')
+                .card-block
+                    p#round1Status.text-primary
+                    table.table.table-bordered.table-sm#round1Table
+                        tbody
+                            tr
+                                - for (var i = 1; i <= 10; i++)
+                                    +addRound1Question(i)
+                            tr
+                                - for (var i = 11; i <= 20; i++)
+                                    +addRound1Question(i)
+                            tr
+                                - for (var i = 21; i <= 25; i++)
+                                    +addRound1Question(i)
+        .card
+            #heading2.card-header(role='tab')
+                a.collapsed(data-toggle='collapse', data-parent='#adminContainer', href='#collapse2', aria-expanded='false', aria-controls='collapse2')
+                    | THỦ LĨNH TÀI NĂNG
+            #collapse2.collapse(role='tabpanel', aria-labelledby='heading2')
+                .card-block
+                    | TODO 2
+        .card
+            #heading3.card-header(role='tab')
+                a.collapsed(data-toggle='collapse', data-parent='#adminContainer', href='#collapse3', aria-expanded='false', aria-controls='collapse3')
+                    | THỦ LĨNH NHẠY BÉN
+            #collapse3.collapse(role='tabpanel', aria-labelledby='heading3')
+                .card-block
+                    | TODO 3
+        .card
+            #heading4.card-header(role='tab')
+                a.collapsed(data-toggle='collapse', data-parent='#adminContainer', href='#collapse4', aria-expanded='false', aria-controls='collapse4')
+                    | TÔI LÀ THỦ LĨNH
+            #collapse4.collapse(role='tabpanel', aria-labelledby='heading4')
+                .card-block
+                    | TODO 4

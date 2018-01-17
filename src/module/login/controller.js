@@ -22,6 +22,11 @@ module.exports = (app, moduleViewPath) => {
             password = req.body.password;
         app.model.User.auth(id, password, (user) => {
             if (user) {
+                if (user.role == 'admin') {
+                    var userIndex = user.role == 'mc' ? 0 : parseInt(user.username);
+                    app.setOnline(userIndex, true);
+                }
+
                 req.session.user = user;
                 res.send({error: null, role: user.role});
             } else {
