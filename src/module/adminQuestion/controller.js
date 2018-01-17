@@ -37,6 +37,7 @@ module.exports = (app, moduleViewPath) => {
                 answerB: req.body.answerB,
                 answerC: req.body.answerC,
                 answerD: req.body.answerD,
+                result : req.body.result,
                 clipUrl: req.body.clipUrl,
                 hint: req.body.hint
             };
@@ -61,6 +62,7 @@ module.exports = (app, moduleViewPath) => {
             if(req.body.answerB) changes.answerB = req.body.answerB;
             if(req.body.answerC) changes.answerC = req.body.answerC;
             if(req.body.answerD) changes.answerD = req.body.answerD;
+            if(req.body.result) changes.result = req.body.result;
             if(req.body.hint) changes.hint = req.body.hint;
             if(req.body.clipUrl) changes.clipUrl = req.body.clipUrl;
 

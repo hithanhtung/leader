@@ -1,6 +1,6 @@
 $$.aQuestion = {
     questionId: null,
-    showNewQuestionModal: function (row,level) {
+    showNewQuestionModal: function (row, level) {
         if (row !== null) {
             row = $$.getRow(row, level);
             $$.aQuestion.questionId = this.getRowId(row);
@@ -10,6 +10,7 @@ $$.aQuestion = {
             $('#qAnswerB').val(row.attr('data-answerB'));
             $('#qAnswerC').val(row.attr('data-answerC'));
             $('#qAnswerD').val(row.attr('data-answerD'));
+            $('#qResult input[value="' + row.attr('data-result') + '"]').prop('checked', true);
             $('#qHint').val(row.attr('data-hint'));
         } else {
             $$.aQuestion.questionId = null;
@@ -19,6 +20,7 @@ $$.aQuestion = {
             $('#qAnswerB').val('');
             $('#qAnswerC').val('');
             $('#qAnswerD').val('');
+            $('#qResult input:radio[name=result]:checked').prop('checked', false);
             $('#qHint').val('');
         }
         $('#qsModalError').html('');
@@ -62,33 +64,34 @@ $$.aQuestion = {
             for (i = 0; i < questions.length; i++) {
                 var qs = questions[i];
                 table.append(
-                    '<div class="card" id="questionId'+qs._id+'" data-content="'+qs.content+'" data-answerA="'+qs.answerA+'" data-answerB="'+qs.answerB+'" data-answerC="'+qs.answerC+'" data-answerD="'+qs.answerD+'" data-hint="'+qs.hint+'" data-clipUrl="'+qs.clipUrl+'">'+
-                    '   <div id="heading'+(i+1)+'" role="tab" class="card-header">'+
-                    '       <a data-toggle="collapse" data-parent="#question" href="#collapse'+(i+1)+'" aria-expanded="true" aria-controls="collapse'+(i+1)+'">Question '+qs.index+'</a>'+
-                    '       <a href="#">'+
-                    '           <i class="large material-icons text-danger float-right" onclick="$$.aQuestion.delete(this,3); return false;">delete_forever</i>'+
-                    '       </a>'+
-                    '       <a href="#">'+
-                    '           <i style="margin-right:6px" class="large material-icons text-success float-right" onclick="$$.aQuestion.showNewQuestionModal(this,3); return false;">edit</i>'+
-                    '       </a>'+
-                    '       <a href="#">'+
-                    '           <i style="margin-right:6px" class="large material-icons text-primary float-right" onclick="$$.aQuestion.moveUp(this,3,true); return false;">arrow_upward</i>'+
-                    '       </a>'+
-                    '       <a href="#">'+
-                    '           <i style="margin-right:6px" class="large material-icons text-primary float-right" onclick="$$.aQuestion.moveUp(this,3,false); return false;">arrow_downward</i>'+
-                    '       </a>'+
-                    '   </div>'+
-                    '   <div id="collapse'+(i+1)+'" role="tabpanel" aria-labelledby="heading'+(i+1)+'" class="collapse show">'+
-                    '       <div class="card-block">'+
-                    '           <div role="alert" class="alert alert-primary">'+qs.content+'</div>'+
-                    '           <div role="alert" class="alert alert-secondary"><strong>A. </strong>'+qs.answerA+'</div>'+
-                    '           <div role="alert" class="alert alert-secondary"><strong>B. </strong>'+qs.answerB+'</div>'+
-                    '           <div role="alert" class="alert alert-secondary"><strong>C. </strong>'+qs.answerC+'</div>'+
-                    '           <div role="alert" class="alert alert-secondary"><strong>D. </strong>'+qs.answerD+'</div>'+
-                    '           <div role="alert" class="alert alert-info"><strong>Hint. </strong>'+qs.hint+'</div>'+
-                    '           <div role="alert" class="alert alert-info"><strong>Clip. </strong>'+qs.clipUrl+'</div>'+
-                    '       </div>'+
-                    '   </div>'+
+                    '<div class="card" id="questionId' + qs._id + '" data-content="' + qs.content + '" data-answerA="' + qs.answerA + '" data-answerB="' + qs.answerB + '" data-answerC="' + qs.answerC + '" data-answerD="' + qs.answerD + '" data-hint="' + qs.hint + '" data-clipUrl="' + qs.clipUrl + '">' +
+                    '   <div id="heading' + (i + 1) + '" role="tab" class="card-header">' +
+                    '       <a data-toggle="collapse" data-parent="#question" href="#collapse' + (i + 1) + '" aria-expanded="true" aria-controls="collapse' + (i + 1) + '">Question ' + qs.index + '</a>' +
+                    '       <a href="#">' +
+                    '           <i class="large material-icons text-danger float-right" onclick="$$.aQuestion.delete(this,3); return false;">delete_forever</i>' +
+                    '       </a>' +
+                    '       <a href="#">' +
+                    '           <i style="margin-right:6px" class="large material-icons text-success float-right" onclick="$$.aQuestion.showNewQuestionModal(this,3); return false;">edit</i>' +
+                    '       </a>' +
+                    '       <a href="#">' +
+                    '           <i style="margin-right:6px" class="large material-icons text-primary float-right" onclick="$$.aQuestion.moveUp(this,3,true); return false;">arrow_upward</i>' +
+                    '       </a>' +
+                    '       <a href="#">' +
+                    '           <i style="margin-right:6px" class="large material-icons text-primary float-right" onclick="$$.aQuestion.moveUp(this,3,false); return false;">arrow_downward</i>' +
+                    '       </a>' +
+                    '   </div>' +
+                    '   <div id="collapse' + (i + 1) + '" role="tabpanel" aria-labelledby="heading' + (i + 1) + '" class="collapse show">' +
+                    '       <div class="card-block">' +
+                    '           <div role="alert" class="alert alert-primary">' + qs.content + '</div>' +
+                    '           <div role="alert" class="alert alert-secondary"><strong>A. </strong>' + qs.answerA + '</div>' +
+                    '           <div role="alert" class="alert alert-secondary"><strong>B. </strong>' + qs.answerB + '</div>' +
+                    '           <div role="alert" class="alert alert-secondary"><strong>C. </strong>' + qs.answerC + '</div>' +
+                    '           <div role="alert" class="alert alert-secondary"><strong>D. </strong>' + qs.answerD + '</div>' +
+                    '           <div role="alert" class="alert alert-info"><strong>Hint. </strong>' + qs.hint + '</div>' +
+                    '           <div role="alert" class="alert alert-info"><strong>Result. </strong>' + qs.result + '</div>' +
+                    '           <div role="alert" class="alert alert-info"><strong>Clip. </strong>' + qs.clipUrl + '</div>' +
+                    '       </div>' +
+                    '   </div>' +
                     '</div>'
                 );
             }
@@ -107,30 +110,32 @@ $$.aQuestion = {
             answerB: $('#qAnswerB').val().trim(),
             answerC: $('#qAnswerC').val().trim(),
             answerD: $('#qAnswerD').val().trim(),
-            hint   : $('#qHint').val().trim(),
+            result: $('#qResult input:radio[name=result]:checked').val(),
+            hint: $('#qHint').val().trim(),
         };
-        if(question.content == ''){
+        if (question.content == '') {
             $('#qsModalError').html('Question content can not empty !');
             return;
-        };
-        if(question.answerA == ''){
+        }
+        if (question.answerA == '') {
             $('#qsModalError').html('Answer A can not empty !');
             return;
-        };
-        if(question.answerB == ''){
+        }
+        if (question.answerB == '') {
             $('#qsModalError').html('Answer B can not empty !');
             return;
-        };
-        if(question.answerC == ''){
+        }
+        if (question.answerC == '') {
             $('#qsModalError').html('Answer C can not empty !');
             return;
-        };
-        if(question.answerD == ''){
+        }
+        if (question.answerD == '') {
             $('#qsModalError').html('Answer D can not empty !');
             return;
-        };
+        }
+
         $.ajax({
-            type: ($$.aQuestion.questionId == null ? 'POST':'PUT'),
+            type: ($$.aQuestion.questionId == null ? 'POST' : 'PUT'),
             url: '/adminQuestion',
             data: question,
             dataType: 'JSON',
@@ -148,7 +153,7 @@ $$.aQuestion = {
             }
         });
     },
-    delete: function (row,level) {
+    delete: function (row, level) {
         row = $$.getRow(row, level);
         var itemId = this.getRowId(row);
         $$.confirm('Delete question', 'Are you sure you want to delete this question ?', function () {
@@ -170,10 +175,10 @@ $$.aQuestion = {
             });
         });
     },
-    moveUp: function (row,level,status) {
+    moveUp: function (row, level, status) {
         row = $$.getRow(row, level);
         var itemId = this.getRowId(row);
-        $$.confirm('Move question', 'Are you sure you want to move '+(status ? 'up':'down')+' this question ?', function () {
+        $$.confirm('Move question', 'Are you sure you want to move ' + (status ? 'up' : 'down') + ' this question ?', function () {
             $.ajax({
                 type: 'put',
                 url: '/adminQuestion/move',

@@ -34,6 +34,17 @@ append blockMain
                             p D.
                             textarea#qAnswerD(rows=2 placeholder='D')
                         div.float-right.qAnswer
+                            p Result.
+                            #qResult
+                                label.radio-inline A
+                                    input.form-control(type='radio' name='result' value='a')
+                                label.radio-inline B
+                                    input.form-control(type='radio' name='result' value='b')
+                                label.radio-inline C
+                                    input.form-control(type='radio' name='result' value='c')
+                                label.radio-inline D
+                                    input.form-control(type='radio' name='result' value='d')
+                        div.float-right.qAnswer
                             p Hint.
                             textarea#qHint(rows=2 placeholder='Hint')
                         div.float-right.qAnswer

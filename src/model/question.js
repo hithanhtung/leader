@@ -6,6 +6,7 @@ module.exports = (app) => {
         answerB: String,
         answerC: String,
         answerD: String,
+        result: String,
         clipUrl: String,
         hint: String
     });
