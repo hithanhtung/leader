@@ -7,11 +7,11 @@ append blockJavascript
             | $$.userId = #{user.username};
         include ./bin/frontend.min.js
 append blockMain
+    img.bg-image(src='/img/bg_user.png')
     a.float-right.text-primary(href='#' onclick='window.location.reload(); return false' style='margin:10px; z-index:1000')
         i.material-icons.large loop
-    .container-fluid
-        #questionContent
-        p#answerA
-        p#answerB
-        p#answerC
-        p#answerD
+    #questionContent
+    p#answerA
+    p#answerB
+    p#answerC
+    p#answerD
