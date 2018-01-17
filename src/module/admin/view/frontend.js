@@ -32,7 +32,7 @@ $$.admin = {
         });
     },
 
-    renderOnlineData: function (online) {
+    renderOnline: function (online) {
         for (var i = 0; i < online.length; i++) {
             if (online[i]) {
                 $('#userStatus' + i).addClass('badge-success').removeClass('badge-default');
@@ -46,7 +46,7 @@ $$.admin = {
             type: 'GET',
             url: '/state/online',
             success: function (online) {
-                $$.admin.renderOnlineData(online);
+                $$.admin.renderOnline(online);
             },
             error: function () {
                 alert('Error: get online data!');
@@ -105,6 +105,43 @@ $$.admin = {
         });
     },
 
+    setPoint: function (sender, delta) {
+        var tr = $(sender).parent().parent(),
+            username = tr.attr('data-username'),
+            point = tr.children().eq(1).children().eq(0).val();
+        $.ajax({
+            type: 'put',
+            url: '/point',
+            data: {username: username, point: point * delta},
+            dataType: 'JSON',
+            success: function (result) {
+                if (result.error) {
+                    alert('Admin: Error when set point!')
+                }
+            },
+            error: function () {
+                alert('Admin: Error when set point!')
+            }
+        });
+    },
+    renderPoint: function (points) {
+        Object.keys(points).forEach(function eachKey(userId) {
+            $('#userPoint' + userId).html(points[userId]);
+        });
+    },
+    getPoint: function () {
+        $.ajax({
+            type: 'get',
+            url: '/state/point',
+            success: function (result) {
+                $$.admin.renderPoint(result.points);
+            },
+            error: function () {
+                alert('Admin: Error when get point setting!')
+            }
+        });
+    },
+
     round1Do: function (sender, action) {
         var questionIndex = $(sender).parent().attr('data-value');
         $.ajax({
@@ -126,15 +163,17 @@ $$.admin = {
         $$.admin.getScreen();
         $$.admin.getOnline();
         $$.admin.getRound();
+        $$.admin.getPoint();
 
         $$.socket.on('screen', function (screen) {
             $$.admin.renderScreen(screen.toLowerCase());
         });
-
         $$.socket.on('online', function (online) {
-            $$.admin.renderOnlineData(online);
+            $$.admin.renderOnline(online);
         });
-
+        $$.socket.on('point', function (points) {
+            $$.admin.renderPoint(points);
+        });
         $$.socket.on('round1Do', function (data) {
             $('#round1QuestionIndex').html('Question: ' + data.action + ' ' + data.questionIndex);
         });

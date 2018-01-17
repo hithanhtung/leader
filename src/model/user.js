@@ -80,6 +80,19 @@ module.exports = function (app) {
             });
         },
 
+        getPoint: function (done) {
+            model.find({role: 'user'}).sort({username: 1}).exec(function (error, users) {
+                var points = {};
+                if (error == null) {
+                    for (var i = 0; i < users.length; i++) {
+                        var user = users[i];
+                        points[user.username] = user.point;
+                    }
+                }
+                done(points);
+            });
+        },
+
         deleteById: function (ids, done) {
             model.remove({_id: {$in: ids.split(',')}}, function (error) {
                 done(error);

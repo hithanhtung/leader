@@ -46,6 +46,12 @@ module.exports = (app, moduleViewPath) => {
         res.send(app.online);
     });
 
+    app.get('/state/point', (req, res) => {
+        app.model.User.getPoint((points) => {
+            res.send({points: points});
+        });
+    });
+
     app.get('/state/round', (req, res) => {
         app.model.Setting.getByKey('round', (value) => {
             if (value) {

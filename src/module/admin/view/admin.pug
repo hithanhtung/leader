@@ -53,14 +53,22 @@ append blockMain
                     if (index % 5 == 1)
                         tr
                     td(style='width:20%')
+                        - var elementId = index < 10 ? '0' + index: index;
                         span.badge.badge-pill.badge-default(id='userStatus' + index style='position:absolute') #{index}
-                        if (index < 10)
-                            img(src='/img/user/0' + index + '.png')
-                        else
-                            img(src='/img/user/' + index + '.png')
-                        span.badge.badge-pill.badge-primary(id='userPoint' + index style='position:absolute') #{index}
+                        img(src='/img/user/' + elementId + '.png')
+                        span.badge.badge-pill.badge-primary(id='userPoint' + elementId style='position:absolute')
                         .point-box
-                            | Point
+                            table
+                                tbody
+                                    tr(data-username='"' + elementId + '"')
+                                        td(style='width:auto')
+                                            a.text-danger(href='#' onclick='$$.admin.setPoint(this, -1); return false')
+                                                i.material-icons do_not_disturb_on
+                                        td(style='width:100%')
+                                            input.form-control(type='text' style='text-align:center' value=0)
+                                        td(style='width:auto')
+                                            a.text-primary(href='#' onclick='$$.admin.setPoint(this, +1); return false')
+                                                i.material-icons add_circle
                     if (index == 5)
                         tr
                             td(colspan=5) &nbsp;

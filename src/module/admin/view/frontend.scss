@@ -31,4 +31,9 @@ main {
 
 .point-box {
   width: 100%;
+
+  td {
+    border-width: 0;
+    padding: 0;
+  }
 }
