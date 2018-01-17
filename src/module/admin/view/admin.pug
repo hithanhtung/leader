@@ -23,6 +23,30 @@ mixin addRound1Question(index)
             i.material-icons report
 append blockMain
     #adminContainer.container-fluid(role='tablist' aria-multiselectable='true')
+        .float-left(style='display:inline-flex')
+            | Screen:&nbsp;
+            .btn-group(data-toggle='buttons')
+                label.btn.btn-primary(onclick='$$.admin.selectScreen("empty"); return false')
+                    input.round1Screen#round1ScreenEmpty(type='radio' name='options' autocomplete='off')
+                    | Empty
+                label.btn.btn-primary(onclick='$$.admin.selectScreen("point"); return false')
+                    input.round1Screen#round1ScreenPoint(type='radio' name='options' autocomplete='off')
+                    | Point
+                label.btn.btn-primary(onclick='$$.admin.selectScreen("question"); return false')
+                    input.round1Screen#round1ScreenQuestion(type='radio' name='options' autocomplete='off')
+                    | Question
+            | &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            | Round:&nbsp;
+            .dropdown
+                button#menuRound.btn.btn-secondary.dropdown-toggle.text-primary(type='button' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false') ...
+                .dropdown-menu(aria-labelledby='menuRound')
+                    a.dropdown-item(href='#' data-value=0 onclick='$$.admin.selectRound(this); return false') Chưa thi
+                    a.dropdown-item(href='#' data-value=1 onclick='$$.admin.selectRound(this); return false') Thủ lĩnh trí tuệ
+                    a.dropdown-item(href='#' data-value=2 onclick='$$.admin.selectRound(this); return false') Thủ lĩnh tài năng
+                    a.dropdown-item(href='#' data-value=3 onclick='$$.admin.selectRound(this); return false') Thủ lĩnh nhạy bén
+                    a.dropdown-item(href='#' data-value=4 onclick='$$.admin.selectRound(this); return false') Tôi là thủ lĩnh
+                    a.dropdown-item(href='#' data-value=5 onclick='$$.admin.selectRound(this); return false') Kết thúc
+        span.badge.badge-pill.badge-default.float-right(id='userStatus0') MC
         table.table.table-bordered.table-sm#userTable
             tbody
                 - for (var index = 1; index <= 10; index++)
@@ -44,12 +68,9 @@ append blockMain
             #heading1.card-header(role='tab')
                 a(data-toggle='collapse' data-parent='#adminContainer' href='#collapse1' aria-expanded='true' aria-controls='collapse1')
                     | THỦ LĨNH TRÍ TUỆ
-                a.float-right.text-primary(href='#' onclick='$$.admin.round1Do(this, "hide"); return false')
-                    i.material-icons laptop
-                span.float-right#round1QuestionIndex(style='margin-right:30px')
+                span.float-right#round1QuestionIndex
             #collapse1.collapse.show(role='tabpanel' aria-labelledby='heading1')
                 .card-block
-                    p#round1Status.text-primary
                     table.table.table-bordered.table-sm#round1Table
                         tbody
                             tr
@@ -63,22 +84,22 @@ append blockMain
                                     +addRound1Question(i)
         .card
             #heading2.card-header(role='tab')
-                a.collapsed(data-toggle='collapse', data-parent='#adminContainer', href='#collapse2', aria-expanded='false', aria-controls='collapse2')
+                a.collapsed(data-toggle='collapse' data-parent='#adminContainer' href='#collapse2' aria-expanded='false' aria-controls='collapse2')
                     | THỦ LĨNH TÀI NĂNG
-            #collapse2.collapse(role='tabpanel', aria-labelledby='heading2')
+            #collapse2.collapse(role='tabpanel' aria-labelledby='heading2')
                 .card-block
                     | TODO 2
         .card
             #heading3.card-header(role='tab')
-                a.collapsed(data-toggle='collapse', data-parent='#adminContainer', href='#collapse3', aria-expanded='false', aria-controls='collapse3')
+                a.collapsed(data-toggle='collapse' data-parent='#adminContainer' href='#collapse3' aria-expanded='false' aria-controls='collapse3')
                     | THỦ LĨNH NHẠY BÉN
-            #collapse3.collapse(role='tabpanel', aria-labelledby='heading3')
+            #collapse3.collapse(role='tabpanel' aria-labelledby='heading3')
                 .card-block
                     | TODO 3
         .card
             #heading4.card-header(role='tab')
-                a.collapsed(data-toggle='collapse', data-parent='#adminContainer', href='#collapse4', aria-expanded='false', aria-controls='collapse4')
+                a.collapsed(data-toggle='collapse' data-parent='#adminContainer' href='#collapse4' aria-expanded='false' aria-controls='collapse4')
                     | TÔI LÀ THỦ LĨNH
-            #collapse4.collapse(role='tabpanel', aria-labelledby='heading4')
+            #collapse4.collapse(role='tabpanel' aria-labelledby='heading4')
                 .card-block
                     | TODO 4

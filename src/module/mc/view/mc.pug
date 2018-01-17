@@ -6,4 +6,6 @@ append blockJavascript
         | $$.userId = 0;
         include ./bin/frontend.min.js
 append blockMain
+    a.float-right.text-primary(href='#' onclick='window.location.reload(); return false' style='margin:10px; z-index:1000')
+        i.material-icons.large loop
     | MC

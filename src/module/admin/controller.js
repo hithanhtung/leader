@@ -14,6 +14,34 @@ module.exports = (app, moduleViewPath) => {
         }
     });
 
+    app.get('/state/screen', (req, res) => {
+        app.model.Setting.getByKey('screen', (value) => {
+            if (value) {
+                res.send({screen: value});
+            } else {
+                app.model.Setting.update({key: 'screen', value: 'empty'}, () => {
+                    res.send({screen: 'empty'});
+                });
+            }
+        });
+    });
+    app.put('/state/screen/:value', (req, res) => {
+        var options = app.defaultOptions(req);
+        if (options.user && options.user.role == 'admin') {
+            var value = req.params.value.toLowerCase();
+            if (value == 'empty' || value == 'point' || value == 'question') {
+                app.model.Setting.update({key: 'screen', value: value}, (error) => {
+                    if (error == null) {
+                        app.io.emit('screen', value);
+                    }
+                    res.send({error: error});
+                });
+            }
+        } else {
+            res.send({error: 'Insufficient privileges!'});
+        }
+    });
+
     app.get('/state/online', (req, res) => {
         res.send(app.online);
     });
@@ -29,7 +57,6 @@ module.exports = (app, moduleViewPath) => {
             }
         });
     });
-
     app.put('/state/round', (req, res) => {
         var options = app.defaultOptions(req),
             key = req.body.key,
@@ -73,32 +100,21 @@ module.exports = (app, moduleViewPath) => {
         if (options.user && options.user.role == 'admin') {
             app.model.Setting.getByKey('round', (roundIndex) => {
                 if (roundIndex == 1) {
-                    var updateRound1Action = () => {
-                        app.model.Setting.update({key: 'round1Action', value: action}, (error) => {
-                            if (error) {
-                                res.send({error: 'Save question state has errors!'});
-                            } else {
-                                //TODO: do action => send, show, start, pause, restart, result, hide
-                                app.io.emit('round1Do', {action: action, questionIndex: questionIndex});
-                                res.send({error: null});
-                            }
-                        });
-                    };
-
-                    if (action == 'hide') {
-                        app.model.Setting.getByKey('round1QuestionIndex', (index) => {
-                            questionIndex = index;
-                            updateRound1Action();
-                        });
-                    } else {
-                        app.model.Setting.update({key: 'round1QuestionIndex', value: questionIndex}, (error) => {
-                            if (error) {
-                                res.send({error: 'Save question state has errors!'});
-                            } else {
-                                updateRound1Action();
-                            }
-                        });
-                    }
+                    app.model.Setting.update({key: 'round1QuestionIndex', value: questionIndex}, (error) => {
+                        if (error) {
+                            res.send({error: 'Save question state has errors!'});
+                        } else {
+                            app.model.Setting.update({key: 'round1Action', value: action}, (error) => {
+                                if (error) {
+                                    res.send({error: 'Save question state has errors!'});
+                                } else {
+                                    //TODO: do action => send, show, start, pause, restart, result
+                                    app.io.emit('round1Do', {action: action, questionIndex: questionIndex});
+                                    res.send({error: null});
+                                }
+                            });
+                        }
+                    });
                 } else {
                     res.send({error: 'Invalid round!'});
                 }

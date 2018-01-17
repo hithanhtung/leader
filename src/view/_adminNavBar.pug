@@ -10,17 +10,6 @@ nav.navbar.navbar-toggleable-md.navbar-light.bg-faded.fixed-top
                 a.nav-link#menuUser(href='/adminUser') User
             li.nav-item
                 a.nav-link#menuQuestion(href='/adminQuestion') Question
-            .dropdown(style='margin-left:60px; display:none')
-                button#menuRound.btn.btn-secondary.dropdown-toggle.text-primary(type='button', data-toggle='dropdown', aria-haspopup='true', aria-expanded='false') ...
-                .dropdown-menu(aria-labelledby='menuRound')
-                    a.dropdown-item(href='#' data-value=0 onclick='$$.selectRound(this); return false') Chưa thi
-                    a.dropdown-item(href='#' data-value=1 onclick='$$.selectRound(this); return false') Thủ lĩnh trí tuệ
-                    a.dropdown-item(href='#' data-value=2 onclick='$$.selectRound(this); return false') Thủ lĩnh tài năng
-                    a.dropdown-item(href='#' data-value=3 onclick='$$.selectRound(this); return false') Thủ lĩnh nhạy bén
-                    a.dropdown-item(href='#' data-value=4 onclick='$$.selectRound(this); return false') Tôi là thủ lĩnh
-                    a.dropdown-item(href='#' data-value=5 onclick='$$.selectRound(this); return false') Kết thúc
-            li.nav-item
-                span.badge.badge-pill.badge-default(id='userStatus0' style='margin-left:60px') MC
             li.nav-item.navbar-toggler-right
                 a.nav-link(href='#' onclick='$$.logout(); return false')
                     i.large.material-icons.text-danger power_settings_new
