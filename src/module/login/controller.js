@@ -7,6 +7,8 @@ module.exports = (app, moduleViewPath) => {
             res.redirect('/admin');
         } else if (options.user.role == 'user') {
             res.redirect('/user');
+        } else if (options.user.role == 'mc') {
+            res.redirect('/mc');
         } else {
             res.redirect('/');
         }
@@ -22,7 +24,7 @@ module.exports = (app, moduleViewPath) => {
             password = req.body.password;
         app.model.User.auth(id, password, (user) => {
             if (user) {
-                if (user.role == 'admin') {
+                if (user.role != 'admin') {
                     var userIndex = user.role == 'mc' ? 0 : parseInt(user.username);
                     app.setOnline(userIndex, true);
                 }

@@ -8,6 +8,7 @@ module.exports = (app, http) => {
 
     app.io = require('socket.io')(http);
     app.io.on('connection', (socket) => {
+        // console.log('User connected');
         var userIndex = null;
 
         socket.on('login', (index) => {
@@ -20,9 +21,9 @@ module.exports = (app, http) => {
         });
 
         socket.on('disconnect', () => {
-            console.log('User ' + userIndex + ' disconnected');
+            console.log('User ' + userIndex + ' disconnected!');
             try {
-                app.setOnline(index, false);
+                app.setOnline(userIndex, false);
             } catch (ex) {
             }
         });

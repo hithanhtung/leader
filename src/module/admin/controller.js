@@ -7,6 +7,8 @@ module.exports = (app, moduleViewPath) => {
             res.render(moduleViewPath + 'admin', options);
         } else if (options.user.role == 'user') {
             res.redirect('/user');
+        } else if (options.user.role == 'mc') {
+            res.redirect('/mc');
         } else {
             res.redirect('/');
         }

@@ -3,9 +3,9 @@ $$.login = {
         $('#username').focus();
 
         //TODO: delete
-        $('#username').val('admin');
-        $('#password').val('12345678');
-        $('#loginBox button').click();
+        // $('#username').val('admin');
+        // $('#password').val('12345678');
+        // $('#loginBox button').click();
     },
 
     loginOnKeyup: function (e) {
@@ -41,6 +41,8 @@ $$.login = {
                     window.location = '/admin';
                 } else if (result.role == 'user') {
                     window.location = '/user';
+                } else if (result.role == 'mc') {
+                    window.location = '/mc';
                 } else {
                     window.location = '/logout'
                 }
