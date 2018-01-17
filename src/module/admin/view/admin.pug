@@ -52,20 +52,21 @@ append blockMain
                 - for (var index = 1; index <= 10; index++)
                     if (index % 5 == 1)
                         tr
-                    td(style='width:20%')
+                    td(style='width:20%; position:relative')
                         - var elementId = index < 10 ? '0' + index: index;
-                        span.badge.badge-pill.badge-default(id='userStatus' + index style='position:absolute') #{index}
                         img(src='/img/user/' + elementId + '.png')
-                        span.badge.badge-pill.badge-primary(id='userPoint' + elementId style='position:absolute')
+                        span.badge.badge-pill.badge-default(id='userStatus' + index style='position:absolute; left:6px; top:6px') #{index}
+                        span.badge.badge-pill.badge-primary(id='userPoint' + elementId style='position:absolute; left:6px; top:26px')
+                        span.badge.badge-pill.badge-success(id='userAnswer' + elementId style='position:absolute; left:6px; top:46px') Answer
                         .point-box
                             table
                                 tbody
-                                    tr(data-username='"' + elementId + '"')
+                                    tr(data-username=elementId)
                                         td(style='width:auto')
                                             a.text-danger(href='#' onclick='$$.admin.setPoint(this, -1); return false')
                                                 i.material-icons do_not_disturb_on
                                         td(style='width:100%')
-                                            input.form-control(type='text' style='text-align:center' value=0)
+                                            input.form-control(type='text' style='text-align:center' value=10)
                                         td(style='width:auto')
                                             a.text-primary(href='#' onclick='$$.admin.setPoint(this, +1); return false')
                                                 i.material-icons add_circle

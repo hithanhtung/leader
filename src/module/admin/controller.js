@@ -51,6 +51,19 @@ module.exports = (app, moduleViewPath) => {
             res.send({points: points});
         });
     });
+    app.put('/state/point', (req, res) => {
+        var options = app.defaultOptions(req);
+        if (options.user && options.user.role == 'admin') {
+            var username = req.body.username,
+                point = req.body.point;
+            app.model.User.addPoint(username, point, (error) => {
+                res.send({error: error});
+                app.model.User.getPoint((points) => {
+                    app.io.emit('point', points);
+                });
+            });
+        }
+    });
 
     app.get('/state/round', (req, res) => {
         app.model.Setting.getByKey('round', (value) => {

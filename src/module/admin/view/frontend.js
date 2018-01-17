@@ -111,7 +111,7 @@ $$.admin = {
             point = tr.children().eq(1).children().eq(0).val();
         $.ajax({
             type: 'put',
-            url: '/point',
+            url: '/state/point',
             data: {username: username, point: point * delta},
             dataType: 'JSON',
             success: function (result) {
@@ -126,7 +126,7 @@ $$.admin = {
     },
     renderPoint: function (points) {
         Object.keys(points).forEach(function eachKey(userId) {
-            $('#userPoint' + userId).html(points[userId]);
+            $('#userPoint' + userId).html('Point: ' + points[userId]);
         });
     },
     getPoint: function () {

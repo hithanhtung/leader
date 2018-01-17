@@ -92,6 +92,20 @@ module.exports = function (app) {
                 done(points);
             });
         },
+        addPoint: function (username, point, done) {
+            model.findOne({username: username}, function (error, user) {
+                if (error || user == null) {
+                    done('Error on add point to user!');
+                } else {
+                    try {
+                        user.point = parseInt(user.point) + parseInt(point);
+                        user.save(done);
+                    } catch (ex) {
+                        done('Error on add point to user 123!');
+                    }
+                }
+            });
+        },
 
         deleteById: function (ids, done) {
             model.remove({_id: {$in: ids.split(',')}}, function (error) {

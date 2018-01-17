@@ -1,43 +1,15 @@
 extends ../../../view/main
 append blockCss
     +link('/css/md/adminQuestion.min.css')
+    +link('/css/font-awesome.min.css')
+    +link('/css/froala_editor.pkgd.min.css')
 append blockJavascript
+    +script('/js/froala_editor.pkgd.min.js')
     script
         include ./bin/frontend.min.js
 append blockMain
     .container-fluid(style='margin-top:6px')
         #question(role='tablist' aria-multiselectable='true')
-            .card
-                #heading1.card-header(role='tab')
-                    a(data-toggle='collapse' data-parent='#question' href='#collapse1' aria-expanded='true' aria-controls='collapse1')
-                        | Question #1
-                    a(href='#')
-                        i.large.material-icons.text-danger.float-right delete_forever
-                    a(href='#')
-                        i.large.material-icons.text-primary.float-right(style='margin-right:6px') arrow_upward
-                    a(href='#')
-                        i.large.material-icons.text-primary.float-right(style='margin-right:6px') arrow_downward
-                #collapse1.collapse.show(role='tabpanel' aria-labelledby='heading1')
-                    .card-block
-                        | TODO
-            .card
-                #heading2.card-header(role='tab')
-                    a.collapsed(data-toggle='collapse' data-parent='#question' href='#collapse2' aria-expanded='false' aria-controls='collapse2')
-                        | Question #2
-                    a(href='#')
-                        i.large.material-icons.text-danger.float-right delete_forever
-                #collapse2.collapse(role='tabpanel' aria-labelledby='heading2')
-                    .card-block
-                        | TODO
-            .card
-                #heading3.card-header(role='tab')
-                    a.collapsed(data-toggle='collapse' data-parent='#question' href='#collapse3' aria-expanded='false' aria-controls='collapse3')
-                        | Question #3
-                    a(href='#')
-                        i.large.material-icons.text-danger.float-right delete_forever
-                #collapse3.collapse(role='tabpanel' aria-labelledby='heading3')
-                    .card-block
-                        | TODO
     .modal.fade#modalQuestion(style='color:black')
         .modal-dialog.modal-lg(role='document')
             .modal-content
@@ -46,6 +18,7 @@ append blockMain
                     button.close(type='button' data-dismiss='modal' aria-label='Close')
                         span(aria-hidden='true') &times;
                 .modal-body
+                    p#qsModalError(style='color:red')
                     .form-group
                         textarea#qContent(style='width:100%' rows=3 placeholder='Content')
                         div.float-right.qAnswer
@@ -62,7 +35,10 @@ append blockMain
                             textarea#qAnswerD(rows=2 placeholder='D')
                         div.float-right.qAnswer
                             p Hint.
-                            textarea#qAnswerHint(rows=2 placeholder='Hint')
+                            textarea#qHint(rows=2 placeholder='Hint')
+                        div.float-right.qAnswer
+                            p Clip.
+                            input.form-control#qClip(type='text' placeholder='Clip')
                 .modal-footer
-                    button.btn.btn-primary.confirmYes(type='button') Save
+                    button.btn.btn-primary.confirmYes(type='button' onclick="$$.aQuestion.save(); return false;") Save
                     button.btn.btn-secondary(type='button' data-dismiss='modal') No
