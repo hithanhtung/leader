@@ -1,11 +1,34 @@
 extends ../../../view/main
 append blockCss
-    +link('/css/md/admin.min.css')
+    +link('/css/md/mc.min.css')
 append blockJavascript
     script
         | $$.userId = 0;
         include ./bin/frontend.min.js
 append blockMain
-    a.float-right.text-primary(href='#' onclick='window.location.reload(); return false' style='margin:10px; z-index:1000')
-        i.material-icons.large loop
-    | MC
+    table.table.table-bordered.table-sm#userTable
+        tbody
+            - for (var index = 1; index <= 10; index++)
+                if (index % 5 == 1)
+                    tr(style='height:0px')
+                td(id='tdEle' style='width:10%; position:relative')
+                    - var elementId = index < 10 ? '0' + index: index;
+                    img(src='/img/user/' + elementId + '.png')
+                    span.badge.badge-pill.badge-default(id='userStatus' + index style='position:absolute; left:6px; top:6px') #{index}
+                    span.badge.badge-pill.badge-primary(id='userPoint' + elementId style='position:absolute; left:6px; top:26px')
+                    span.badge.badge-pill.badge-success(id='userAnswer' + elementId style='position:absolute; left:6px; top:46px') Answer
+    #round1.round.container-fluid
+        #questionContainer
+            #questionContent
+            p#answerA
+            p#answerB
+            p#answerC
+            p#answerD
+            p#hint
+            p#result
+    #round2.round
+        | Vòng Thủ lĩnh tài năng
+    #round3.round
+        | Vòng Thủ lĩnh nhạy bén
+    #round4.round
+        | Vòng Tôi là thủ lĩnh

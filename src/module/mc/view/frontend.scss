@@ -1,0 +1,28 @@
+#userTable {
+  border-width: 0;
+  tr {
+    height: 100px;
+    td {
+      text-align: center;
+
+      img {
+        width: 60%;
+      }
+    }
+  }
+}
+
+#round1Table {
+  td {
+    text-align: center;
+    width: 10%;
+
+    a {
+      margin: 0 1px;
+
+      & :hover {
+        color: black
+      }
+    }
+  }
+}

@@ -10,7 +10,11 @@ $$.aQuestion = {
             $('#qAnswerB').val(row.attr('data-answerB'));
             $('#qAnswerC').val(row.attr('data-answerC'));
             $('#qAnswerD').val(row.attr('data-answerD'));
-            $('#qResult input[value="' + row.attr('data-result') + '"]').prop('checked', true);
+            if(row.attr('data-result') == undefined){
+                $('#qResult input:radio[name=result]:checked').prop('checked', false);
+            }else{
+                $('#qResult input[value="' + row.attr('data-result') + '"]').prop('checked', true);
+            }
             $('#qHint').val(row.attr('data-hint'));
         } else {
             $$.aQuestion.questionId = null;
@@ -64,7 +68,7 @@ $$.aQuestion = {
             for (i = 0; i < questions.length; i++) {
                 var qs = questions[i];
                 table.append(
-                    '<div class="card" id="questionId' + qs._id + '" data-content="' + qs.content + '" data-answerA="' + qs.answerA + '" data-answerB="' + qs.answerB + '" data-answerC="' + qs.answerC + '" data-answerD="' + qs.answerD + '" data-hint="' + qs.hint + '" data-clipUrl="' + qs.clipUrl + '">' +
+                    '<div class="card" id="questionId' + qs._id + '" data-result="'+qs.result + '" data-content="' + qs.content + '" data-answerA="' + qs.answerA + '" data-answerB="' + qs.answerB + '" data-answerC="' + qs.answerC + '" data-answerD="' + qs.answerD + '" data-hint="' + qs.hint + '" data-clipUrl="' + qs.clipUrl + '">' +
                     '   <div id="heading' + (i + 1) + '" role="tab" class="card-header">' +
                     '       <a data-toggle="collapse" data-parent="#question" href="#collapse' + (i + 1) + '" aria-expanded="true" aria-controls="collapse' + (i + 1) + '">Question ' + qs.index + '</a>' +
                     '       <a href="#">' +
