@@ -1,5 +1,7 @@
 module.exports = (app, http) => {
     app.online = [false, false, false, false, false, false, false, false, false, false, false];
+    app.questions = {};
+    app.answers = {};
 
     app.setOnline = (index, value) => {
         app.online[index] = value;

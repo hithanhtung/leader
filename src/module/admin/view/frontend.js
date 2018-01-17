@@ -54,6 +54,28 @@ $$.admin = {
         });
     },
 
+    renderQuestionsState: function (state) {
+        Object.keys(state.questions).forEach(function eachKey(userId) {
+            var currentQuestion = state.questions[userId],
+                currentAnswer = state.answers[userId];
+            if (currentAnswer == null) currentAnswer = '';
+            $('#userQuestion' + userId).attr('data-question', currentQuestion).attr('data-answer', currentAnswer)
+                .html('Question: ' + currentQuestion + (currentAnswer == '' ? '' : ' => ' + currentAnswer.toUpperCase()));
+        });
+    },
+    getQuestionsState: function () {
+        $.ajax({
+            type: 'GET',
+            url: '/state/questions',
+            success: function (questionsState) {
+                $$.admin.renderQuestionsState(questionsState);
+            },
+            error: function () {
+                alert('Error: get questions state!');
+            }
+        });
+    },
+
     selectRound: function (sender) {
         sender = $(sender);
         $$.confirm('Change round', 'Are you sure you want to change round "<b>' + sender.html() + '</b>"?', function () {
@@ -162,6 +184,7 @@ $$.admin = {
         $('#menuHome').append('<span class="sr-only">(current)</span>').parent().addClass('active');
         $$.admin.getScreen();
         $$.admin.getOnline();
+        $$.admin.getQuestionsState();
         $$.admin.getRound();
         $$.admin.getPoint();
 
@@ -170,6 +193,9 @@ $$.admin = {
         });
         $$.socket.on('online', function (online) {
             $$.admin.renderOnline(online);
+        });
+        $$.socket.on('questions_state', function (questionsState) {
+            $$.admin.renderQuestionsState(questionsState);
         });
         $$.socket.on('point', function (points) {
             $$.admin.renderPoint(points);

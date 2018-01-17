@@ -45,6 +45,9 @@ module.exports = (app, moduleViewPath) => {
     app.get('/state/online', (req, res) => {
         res.send(app.online);
     });
+    app.get('/state/questions', (req, res) => {
+        res.send({questions: app.questions, answers: app.answers});
+    });
 
     app.get('/state/point', (req, res) => {
         app.model.User.getPoint((points) => {

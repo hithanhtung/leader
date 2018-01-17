@@ -11,4 +11,20 @@ module.exports = (app, moduleViewPath) => {
             res.redirect('/');
         }
     });
+
+    app.put('/user/round1/question/:questionIndex', (req, res) => {
+        var options = app.defaultOptions(req),
+            questionIndex = req.params.questionIndex;
+        if (options.user && options.user.role == 'user') {
+            try {
+                app.questions[options.user.username] = questionIndex;
+                res.send({error: null, questions: app.questions});
+                app.io.emit('questions_state', {questions: app.questions, answers: app.answers});
+            } catch (ex) {
+                res.send({error: 'Error on store user question index!'});
+            }
+        } else {
+            res.send({error: 'Insufficient privileges!'});
+        }
+    });
 };

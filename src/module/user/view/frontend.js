@@ -34,6 +34,19 @@ $$.user = {
             $('#answerD').html('D. ' + $$.user.question.answerD);
         }
         //TODO
+
+        $.ajax({
+            type: 'PUT',
+            url: '/user/round1/question/' + $$.user.question.index,
+            success: function (reportResult) {
+                if (reportResult.error) {
+                    alert('User: ' + error);
+                }
+            },
+            error: function () {
+                alert('User: Report question has error!');
+            }
+        });
     },
     getRound: function () {
         $.ajax({
@@ -75,7 +88,6 @@ $$.user = {
             $$.user.renderPoint(points);
         });
         $$.socket.on('round1Do', function (result) {
-            console.log(result);
             if ($$.user.roundIndex == 1) {
                 $$.user.renderRound1(result);
             }
