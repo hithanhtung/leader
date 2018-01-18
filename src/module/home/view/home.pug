@@ -8,7 +8,7 @@ append blockJavascript
         include ./bin/frontend.min.js
 append blockMain
     img.countdown-image(src='/img/countdown.png')
-    .col-md-6.col-sm-10#tableCountDown
+    .col-md-6.col-sm-10#tableCountDown(style="display:block;")
         #retroclockbox1(style='display:inline-block; width:auto')
             table
                 tbody
@@ -17,3 +17,24 @@ append blockMain
                         td(style='width:25%') Giờ
                         td(style='width:25%') Phút
                         td(style='width:25%') Giây
+    .col-md-8.col-sm-12.rounded#pointTableBox
+        table.table.table-responsive-md#pointTable1(style="display:none;")
+            tbody
+                -for (var index = 1; index <= 6; index++)
+                    if (index > 5)
+                        td(style='width:20%; position:relative')
+                    else
+                        td(style='width:20%; position:relative')
+                            - var elementId = index < 10 ? '0' + index: index;
+                            img(src='/img/user/' + elementId + '.png')
+                            span.badge.badge-pill.badge-primary(id='userPoint' + elementId style='display: inline-block; margin-left:6px;')
+        table.table.table-responsive-md#pointTable2(style="display:none;")
+            tbody
+                -for (var index2 = 6; index2 <= 11; index2++)
+                    if (index2 > 10)
+                        td(style='width:20%; position:relative')
+                    else
+                        td(style='width:20%; position:relative')
+                            - var elementId2 = index2 < 10 ? '0' + index2: index2;
+                            img(src='/img/user/' + elementId2 + '.png')
+                            span.badge.badge-pill.badge-primary(id='userPoint' + elementId2 style='display: inline-block; margin-left:6px;')

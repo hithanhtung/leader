@@ -181,13 +181,15 @@ module.exports = (app, moduleViewPath) => {
             questionIndex = req.params.questionIndex;
 
         var solveAction = (currentAction) => {
+
+
+
             app.model.Setting.update({key: 'round1Action', value: action}, (error) => {
                 if (error) {
                     res.send({error: 'Save question state has errors!'});
                 } else {
                     var result = {action: action, questionIndex: questionIndex};
                     //TODO: do action => send, show, start, pause, restart, result
-
 
 
 
