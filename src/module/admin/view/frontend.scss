@@ -14,7 +14,6 @@ main {
   }
 }
 
-
 #round1Table {
   td {
     text-align: center;
@@ -36,5 +35,14 @@ main {
   td {
     border-width: 0;
     padding: 0;
+  }
+}
+
+.time-box {
+  display: inline-flex;
+  white-space: nowrap;
+
+  input {
+    text-align: right;
   }
 }

@@ -1,11 +1,6 @@
 $$.login = {
     init: function () {
         $('#username').focus();
-
-        //TODO: delete
-        // $('#username').val('admin');
-        // $('#password').val('12345678');
-        // $('#loginBox button').click();
     },
 
     loginOnKeyup: function (e) {

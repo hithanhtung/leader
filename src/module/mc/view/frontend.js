@@ -31,7 +31,7 @@ $$.mc = {
             $('#answerD').html('');
             $('#hint').html('');
             $('#result').html('');
-        } else if (result.action == 'show' && $$.mc.question.index == result.questionIndex) {
+        } else if ($$.mc.question.index == result.questionIndex) {
             $('#questionContainer').css('display', 'block');
             $('#questionContent').html($$.mc.question.content);
             $('#answerA').html('A. ' + $$.mc.question.answerA);
@@ -41,7 +41,6 @@ $$.mc = {
             $('#hint').html('Hint: ' + $$.mc.question.hint);
             $('#result').html('Result: ' + $$.mc.question.result.toUpperCase());
         }
-        //TODO
     },
     getRound1: function () {
         if ($$.mc.roundIndex == 1) {

@@ -1,9 +1,6 @@
 $$.user = {
     renderPoint: function (points) {
-        //TODO
-        // Object.keys(points).forEach(function eachKey(userId) {
-        //     $('#userPoint' + userId).html(points[userId]);
-        // });
+        $('#userPoint').html(points[$$.userId]);
     },
     getPoint: function () {
         $.ajax({
@@ -21,19 +18,23 @@ $$.user = {
     renderRound1: function (result) {
         if (result.action == 'send') {
             $$.user.question = result.question;
-            $('#questionContent').html('');
-            $('#answerA').html('');
-            $('#answerB').html('');
-            $('#answerC').html('');
-            $('#answerD').html('');
-        } else if (result.action == 'show' && $$.user.question.index == result.questionIndex) {
-            $('#questionContent').html($$.user.question.content);
-            $('#answerA').html('A. ' + $$.user.question.answerA);
-            $('#answerB').html('B. ' + $$.user.question.answerB);
-            $('#answerC').html('C. ' + $$.user.question.answerC);
-            $('#answerD').html('D. ' + $$.user.question.answerD);
+            $('#questionContent').html('').css('display', 'none');
+            $('#answerA').html('').css('display', 'none');
+            $('#answerB').html('').css('display', 'none');
+            $('#answerC').html('').css('display', 'none');
+            $('#answerD').html('').css('display', 'none');
+            $('#countdown1').css('display', 'none');
+        } else if ($$.user.question.index == result.questionIndex) {
+            $('#questionContent').html($$.user.question.content).css('display', 'block');
+            $('#answerA').html('A. ' + $$.user.question.answerA).css('display', 'block');
+            $('#answerB').html('B. ' + $$.user.question.answerB).css('display', 'block');
+            $('#answerC').html('C. ' + $$.user.question.answerC).css('display', 'block');
+            $('#answerD').html('D. ' + $$.user.question.answerD).css('display', 'block');
+
+            $('#countdown1').css('display', 'block');
+            $('#questionResult').css('display', result.action == 'result' ? 'block' : 'none')
+            //TODO
         }
-        //TODO
 
         $.ajax({
             type: 'PUT',
@@ -48,26 +49,28 @@ $$.user = {
             }
         });
     },
+    getRound1: function () {
+        if ($$.user.roundIndex == 1) {
+            $.ajax({
+                type: 'GET',
+                url: '/admin/round1/state',
+                success: function (result) {
+                    $$.user.question = result.question;
+                    $$.user.renderRound1(result);
+                },
+                error: function () {
+                    alert('User: ' + $$.capitalizeFirstLetter(action) + ' question ' + questionIndex + '!');
+                }
+            });
+        }
+    },
     getRound: function () {
         $.ajax({
             type: 'get',
             url: '/state/round',
             success: function (result) {
-                if (result.round == 1) {
-                    $$.user.roundIndex = 1;
-
-                    $.ajax({
-                        type: 'GET',
-                        url: '/admin/round1/state',
-                        success: function (result) {
-                            $$.user.question = result.question;
-                            $$.user.renderRound1(result);
-                        },
-                        error: function () {
-                            alert('User: ' + $$.capitalizeFirstLetter(action) + ' question ' + questionIndex + '!');
-                        }
-                    });
-                }
+                $$.user.roundIndex = result.round;
+                $$.user.getRound1();
             },
             error: function () {
                 alert('User: Error when get round setting!')
@@ -75,8 +78,33 @@ $$.user = {
         });
     },
 
+    round1Select: function (sender) {
+        sender = $(sender);
+        var choice = sender.attr('data-value').trim().toLowerCase();
+        $.ajax({
+            type: 'PUT',
+            url: '/user/round1/answer/' + $$.user.question.index + '/' + choice,
+            success: function (result) {
+                if (result.error) {
+                    alert('User: ' + result.error + '!');
+                } else {
+                    $('#answerA').css('background-color', '#f5f5f5');
+                    $('#answerB').css('background-color', '#f5f5f5');
+                    $('#answerC').css('background-color', '#f5f5f5');
+                    $('#answerD').css('background-color', '#f5f5f5');
+                    sender.css('background-color', 'yellow');
+                    //TODO: show result.time
+                }
+            },
+            error: function () {
+                alert('User: Send answer has errors!');
+            }
+        });
+    },
+
     init: function () {
         $$.socket.emit('login', $$.userId);
+        $('#userAvatar').attr('src', '/img/user/' + $$.userId + '.png');
 
         $$.user.getRound();
         $$.user.getPoint();
@@ -88,9 +116,7 @@ $$.user = {
             $$.user.renderPoint(points);
         });
         $$.socket.on('round1Do', function (result) {
-            if ($$.user.roundIndex == 1) {
-                $$.user.renderRound1(result);
-            }
+            $$.user.getRound1();
         });
     }
 };

@@ -4,14 +4,34 @@ append blockCss
 append blockJavascript
     script
         if (user && user.role=='user')
-            | $$.userId = #{user.username};
+            | $$.userId = '#{user.username}';
         include ./bin/frontend.min.js
 append blockMain
-    img.bg-image(src='/img/bg_user.png')
+    img.bg-image(src='/img/round0.png')
     a.float-right.text-primary(href='#' onclick='window.location.reload(); return false' style='margin:10px; z-index:1000')
         i.material-icons.large loop
-    #questionContent
-    p#answerA
-    p#answerB
-    p#answerC
-    p#answerD
+    table#user-box
+        tbody
+            tr
+                td(align='left')
+                    img#userAvatar
+                td(align='center' colspan=2)
+                    #countdown1
+                td(align='right')
+                    #userPoint
+            tr
+                td(colspan=4)
+                    #questionContent
+            tr
+                td(style='width:50%' colspan=2)
+                    p#answerA(data-value='a' onclick='$$.user.round1Select(this)')
+                td(style='width:50%' colspan=2)
+                    p#answerB(data-value='b' onclick='$$.user.round1Select(this)')
+            tr
+                td(style='width:50%' colspan=2)
+                    p#answerC(data-value='c' onclick='$$.user.round1Select(this)')
+                td(style='width:50%' colspan=2)
+                    p#answerD(data-value='d' onclick='$$.user.round1Select(this)')
+            tr
+                td(align='center' colspan=4)
+                    #questionResult

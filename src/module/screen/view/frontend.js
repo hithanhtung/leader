@@ -17,13 +17,7 @@ $$.screen = {
         });
     },
 
-    renderRound: function (roundIndex) {
-        $$.screen.roundIndex = roundIndex;
-
-        $('.round').css('display', 'none');
-        $('#round' + roundIndex).css('display', 'block');
-    },
-    renderRound1State: function (result) {
+    renderRound1: function (result) {
         if (result.action == 'send') {
             $$.screen.question = result.question;
             $('#questionContainer').css('display', 'block');
@@ -42,25 +36,54 @@ $$.screen = {
         }
         //TODO
     },
+    getRound1: function () {
+        $.ajax({
+            type: 'GET',
+            url: '/admin/round1/state',
+            success: function (result) {
+                $$.screen.question = result.question;
+                $$.screen.renderRound1(result);
+            },
+            error: function () {
+                alert('Screen: ' + $$.capitalizeFirstLetter(action) + ' question ' + questionIndex + '!');
+            }
+        });
+    },
+
+    getRound2: function () {
+        //TODO
+    },
+
+    getRound3: function () {
+        //TODO
+    },
+
+    getRound4: function () {
+        //TODO
+    },
+
+    renderRound: function () {
+        $('.round').css('display', 'none');
+        $('#round' + $$.screen.roundIndex).css('display', 'block');
+    },
     getRound: function () {
         $.ajax({
             type: 'get',
             url: '/state/round',
             success: function (result) {
-                $$.screen.renderRound(result.round);
+                if (1 <= result.round && result.round <= 4) {
+                    $$.screen.roundIndex = result.round;
+                    $$.screen.renderRound();
 
-                if (result.round == 1) {
-                    $.ajax({
-                        type: 'GET',
-                        url: '/admin/round1/state',
-                        success: function (result) {
-                            $$.screen.question = result.question;
-                            $$.screen.renderRound1State(result);
-                        },
-                        error: function () {
-                            alert('Screen: ' + $$.capitalizeFirstLetter(action) + ' question ' + questionIndex + '!');
-                        }
-                    });
+                    if ($$.screen.roundIndex == 1) {
+                        $$.screen.getRound1();
+                    } else if ($$.screen.roundIndex == 2) {
+                        $$.screen.getRound2();
+                    } else if ($$.screen.roundIndex == 3) {
+                        $$.screen.getRound3();
+                    } else if ($$.screen.roundIndex == 4) {
+                        $$.screen.getRound4();
+                    }
                 }
             },
             error: function () {
@@ -81,7 +104,7 @@ $$.screen = {
         });
         $$.socket.on('round1Do', function (result) {
             if ($$.screen.roundIndex == 1) {
-                $$.screen.renderRound1State(result);
+                $$.screen.getRound1();
             }
         });
     }

@@ -65,6 +65,8 @@ module.exports = (app, moduleViewPath) => {
                     app.io.emit('point', points);
                 });
             });
+        } else {
+            res.send({error: 'Insufficient privileges!'});
         }
     });
 
@@ -89,6 +91,43 @@ module.exports = (app, moduleViewPath) => {
                     app.io.emit('round', value);
                 }
                 res.send({error: error});
+            });
+        } else {
+            res.send({error: 'Insufficient privileges!'});
+        }
+    });
+
+    var defaultSettingTime = {
+        round1: 10,
+        round2: 3 * 60,
+        round3: 10 * 60,
+        round4: 7 * 60
+    };
+    app.get('/state/time', (req, res) => {
+        app.model.Setting.getByKey('time', (value) => {
+            if (value) {
+                res.send(JSON.parse(value));
+            } else {
+                value = JSON.stringify(defaultSettingTime);
+                app.model.Setting.update({key: 'time', value: value}, () => {
+                    res.send(JSON.parse(value));
+                });
+            }
+        });
+    });
+    app.put('/state/time/:roundIndex/:roundTime', (req, res) => {
+        var options = app.defaultOptions(req);
+        if (options.user && options.user.role == 'admin') {
+            var roundIndex = req.params.roundIndex,
+                roundTime = req.params.roundTime;
+            console.log(roundIndex, roundTime);
+            app.model.Setting.getByKey('time', (value) => {
+                value = value != null ? JSON.parse(value) : Object.assign({}, defaultSettingTime);
+                value['round' + roundIndex] = roundTime;
+
+                app.model.Setting.update({key: 'time', value: JSON.stringify(value)}, () => {
+                });
+                res.send({error: null});
             });
         } else {
             res.send({error: 'Insufficient privileges!'});
@@ -141,6 +180,46 @@ module.exports = (app, moduleViewPath) => {
             action = req.params.action,
             questionIndex = req.params.questionIndex;
 
+        var solveAction = (currentAction) => {
+            app.model.Setting.update({key: 'round1Action', value: action}, (error) => {
+                if (error) {
+                    res.send({error: 'Save question state has errors!'});
+                } else {
+                    var result = {action: action, questionIndex: questionIndex};
+                    //TODO: do action => send, show, start, pause, restart, result
+
+
+
+
+                    if (action == 'send') {
+                        app.model.Question.getByIndex(questionIndex, (error, question) => {
+                            if (error == null && question) {
+                                result.question = {
+                                    index: question.index,
+                                    content: question.content,
+                                    answerA: question.answerA,
+                                    answerB: question.answerB,
+                                    answerC: question.answerC,
+                                    answerD: question.answerD,
+                                    clipUrl: question.clipUrl
+                                };
+                                app.io.emit('round1Do', result);
+                            }
+                        });
+                    } else if (action == 'show') {
+                        app.io.emit('round1Do', result);
+                    } else if (action == 'start') {
+                        app.io.emit('round1Do', result);
+                    } else {
+                        //TODO: delete
+                        app.io.emit('round1Do', result);
+                    }
+
+                    res.send({error: null});
+                }
+            });
+        };
+
         if (options.user && options.user.role == 'admin') {
             app.model.Setting.getByKey('round', (roundIndex) => {
                 if (roundIndex == 1) {
@@ -148,35 +227,11 @@ module.exports = (app, moduleViewPath) => {
                         if (error) {
                             res.send({error: 'Save question state has errors!'});
                         } else {
-                            app.model.Setting.update({key: 'round1Action', value: action}, (error) => {
-                                if (error) {
-                                    res.send({error: 'Save question state has errors!'});
+                            app.model.Setting.getByKey('round1Action', (currentAction) => {
+                                if (currentAction != null) {
+                                    solveAction(currentAction)
                                 } else {
-                                    var result = {action: action, questionIndex: questionIndex};
-                                    //TODO: do action => send, show, start, pause, restart, result
-                                    if (action == 'send') {
-                                        app.model.Question.getByIndex(questionIndex, (error, question) => {
-                                            if (error == null && question) {
-                                                result.question = {
-                                                    index: question.index,
-                                                    content: question.content,
-                                                    answerA: question.answerA,
-                                                    answerB: question.answerB,
-                                                    answerC: question.answerC,
-                                                    answerD: question.answerD,
-                                                    clipUrl: question.clipUrl
-                                                };
-                                                app.io.emit('round1Do', result);
-                                            }
-                                        });
-                                    } else if (action == 'show') {
-                                        app.io.emit('round1Do', result);
-                                    } else {
-                                        //TODO: delete
-                                        app.io.emit('round1Do', result);
-                                    }
-
-                                    res.send({error: null});
+                                    res.send({error: 'Invalid round!'});
                                 }
                             });
                         }

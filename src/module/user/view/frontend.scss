@@ -1,3 +1,7 @@
+$avatarHeight: 120px;
+$userBackcolor: #f5f5f5;
+$pointFontSize: 45px;
+
 .bg-image {
   position: fixed;
   top: 0;
@@ -5,32 +9,42 @@
   width: 100%;
 }
 
-#questionContent {
-  position: fixed;
-  top: 13%;
-  left: 10%;
+#userAvatar {
+  width: auto;
+  height: $avatarHeight;
 }
 
-#answerA {
-  position: fixed;
-  top: 45%;
-  left: 10%;
+#userPoint, #questionResult {
+  text-align: center;
+  width: $avatarHeight;
+  height: $avatarHeight;
+  border: 2px solid gray;
+  border-radius: 50%;
+  font-size: $pointFontSize;
+  line-height: $avatarHeight;
+  background-color: $userBackcolor;
 }
 
-#answerB {
-  position: fixed;
-  top: 45%;
-  left: 60%;
+#questionResult {
+  display: none;
 }
 
-#answerC {
-  position: fixed;
-  top: 65%;
-  left: 10%;
-}
+#user-box {
+  position: absolute;
+  width: 90%;
+  top: 10px;
+  left: 5%;
 
-#answerD {
-  position: fixed;
-  top: 65%;
-  left: 60%;
+  td {
+    padding: 10px;
+  }
+
+  #questionContent, #answerA, #answerB, #answerC, #answerD {
+    width: 100%;
+    margin: 0;
+    padding: 15px;
+    border: 2px solid gray;
+    border-radius: 15px;
+    background-color: $userBackcolor;
+  }
 }

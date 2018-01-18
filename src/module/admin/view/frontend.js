@@ -57,10 +57,15 @@ $$.admin = {
     renderQuestionsState: function (state) {
         Object.keys(state.questions).forEach(function eachKey(userId) {
             var currentQuestion = state.questions[userId],
-                currentAnswer = state.answers[userId];
-            if (currentAnswer == null) currentAnswer = '';
-            $('#userQuestion' + userId).attr('data-question', currentQuestion).attr('data-answer', currentAnswer)
-                .html('Question: ' + currentQuestion + (currentAnswer == '' ? '' : ' => ' + currentAnswer.toUpperCase()));
+                currentAnswer = state.answers[userId],
+                hasAnswer = !(currentAnswer == undefined || currentAnswer == null),
+                answerText = hasAnswer ? ' => ' + currentAnswer.answer.toUpperCase() + currentAnswer.time : '';
+            var userQuestion = $('#userQuestion' + userId)
+                .attr('data-question', currentQuestion).html('Q' + currentQuestion + answerText);
+            if (hasAnswer) {
+                userQuestion.attr('data-answer', currentAnswer.answer)
+                    .attr('data-answer-time', currentAnswer.time);
+            }
         });
     },
     getQuestionsState: function () {
@@ -164,6 +169,49 @@ $$.admin = {
         });
     },
 
+    setTime: function (roundIndex) {
+        var time = $('#roundTime' + roundIndex).val();
+        try {
+            time = parseInt(time);
+        } catch (ex) {
+            time = -1;
+        }
+        if (time < 0) {
+            alert('Admin: Invalid time!');
+            return;
+        }
+
+        $.ajax({
+            type: 'PUT',
+            url: '/state/time/' + roundIndex + '/' + time,
+            success: function (result) {
+                if (result.error) {
+                    alert('Error: set time of round ' + roundIndex + '! ' + result.error);
+                } else {
+                    alert('Success: set time of round ' + roundIndex + '!');
+                }
+            },
+            error: function () {
+                alert('Error: set time of round ' + roundIndex + '!');
+            }
+        });
+    },
+    getTime: function () {
+        $.ajax({
+            type: 'get',
+            url: '/state/time',
+            success: function (result) {
+                if (result.round1) $('#roundTime1').val(result.round1);
+                if (result.round2) $('#roundTime2').val(result.round2);
+                if (result.round3) $('#roundTime3').val(result.round3);
+                if (result.round4) $('#roundTime4').val(result.round4);
+            },
+            error: function () {
+                alert('Admin: Error when get time setting!')
+            }
+        });
+    },
+
     round1Do: function (sender, action) {
         var questionIndex = $(sender).parent().attr('data-value');
         $.ajax({
@@ -187,6 +235,7 @@ $$.admin = {
         $$.admin.getQuestionsState();
         $$.admin.getRound();
         $$.admin.getPoint();
+        $$.admin.getTime();
 
         $$.socket.on('screen', function (screen) {
             $$.admin.renderScreen(screen.toLowerCase());

@@ -27,4 +27,28 @@ module.exports = (app, moduleViewPath) => {
             res.send({error: 'Insufficient privileges!'});
         }
     });
+
+    app.put('/user/round1/answer/:questionIndex/:answer', (req, res) => {
+        var now = (new Date()).getTime(),
+            options = app.defaultOptions(req),
+            questionIndex = req.params.questionIndex,
+            answer = req.params.answer;
+        if (!(options.user && options.user.role == 'user')) {
+            res.send({error: 'Insufficient privileges!'});
+        } else if (app.answerDeadline == null) {
+            res.send({error: 'The test doesn\'t start!'});
+        } else if (app.answerDeadline < now) {
+            res.send({error: 'Your answer has been late!'});
+        } else {
+            var currentAnswer = app.answers[options.user.username];
+            if (currentAnswer == undefined || currentAnswer == null || currentAnswer.answer != answer) {
+                app.answers[options.user.username] = {answer: answer, time: now};
+                res.send({time: now});
+
+                app.io.emit('questions_state', {questions: app.questions, answers: app.answers});
+            } else {
+                res.send({time: currentAnswer.time});
+            }
+        }
+    });
 };

@@ -80,6 +80,11 @@ append blockMain
                 span.float-right#round1QuestionIndex
             #collapse1.collapse.show(role='tabpanel' aria-labelledby='heading1')
                 .card-block
+                    .float-left.time-box
+                        | Time (second):
+                        input#roundTime1.form-control(type='text')
+                        a.text-primary(href='#' onclick='$$.admin.setTime(1); return false')
+                            i.material-icons save
                     table.table.table-bordered.table-sm#round1Table
                         tbody
                             tr
@@ -97,18 +102,33 @@ append blockMain
                     | THỦ LĨNH TÀI NĂNG
             #collapse2.collapse(role='tabpanel' aria-labelledby='heading2')
                 .card-block
-                    | TODO 2
+                    .float-left.time-box
+                        | Time (second):
+                        input#roundTime2.form-control(type='text')
+                        a.text-primary(href='#' onclick='$$.admin.setTime(2); return false')
+                            i.material-icons save
+                    | <br>TODO 2
         .card
             #heading3.card-header(role='tab')
                 a.collapsed(data-toggle='collapse' data-parent='#adminContainer' href='#collapse3' aria-expanded='false' aria-controls='collapse3')
                     | THỦ LĨNH NHẠY BÉN
             #collapse3.collapse(role='tabpanel' aria-labelledby='heading3')
                 .card-block
-                    | TODO 3
+                    .float-left.time-box
+                        | Time (second):
+                        input#roundTime3.form-control(type='text')
+                        a.text-primary(href='#' onclick='$$.admin.setTime(3); return false')
+                            i.material-icons save
+                    | <br>TODO 3
         .card
             #heading4.card-header(role='tab')
                 a.collapsed(data-toggle='collapse' data-parent='#adminContainer' href='#collapse4' aria-expanded='false' aria-controls='collapse4')
                     | TÔI LÀ THỦ LĨNH
             #collapse4.collapse(role='tabpanel' aria-labelledby='heading4')
                 .card-block
-                    | TODO 4
+                    .float-left.time-box
+                        | Time (second):
+                        input#roundTime4.form-control(type='text')
+                        a.text-primary(href='#' onclick='$$.admin.setTime(4); return false')
+                            i.material-icons save
+                    | <br>TODO 4
