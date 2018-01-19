@@ -2,7 +2,14 @@ module.exports = (app, http) => {
     app.online = [false, false, false, false, false, false, false, false, false, false, false];
     app.questions = {};
     app.answers = {};
-    app.answerDeadline = null; // TODO: start => new Date()       result => null
+    app.answerDeadline = null;
+    app.round1RemainTime = 0;
+
+    app.round2User = '';
+    app.round2Deadline = null;
+
+    app.round3Deadline = null;
+    app.round4Deadline = null;
 
     app.setOnline = (index, value) => {
         app.online[index] = value;

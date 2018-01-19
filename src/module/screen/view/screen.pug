@@ -1,22 +1,94 @@
 extends ../../../view/main
 append blockCss
     +link('/css/md/screen.min.css?v=#{version}')
+    +link('/css/flipcountdown.min.css')
 append blockJavascript
+    +script('/js/flipcountdown.min.js')
     script
         include ./bin/frontend.min.js
 append blockMain
-    #round1.round.container-fluid
-        #questionContainer
-            p#questionContent
-            p#answerA
-            p#answerB
-            p#answerC
-            p#answerD
-        #pointContainer
-            | Point
-    #round2.round
-        | Vòng Thủ lĩnh tài năng
-    #round3.round
-        | Vòng Thủ lĩnh nhạy bén
-    #round4.round
-        | Vòng Tôi là thủ lĩnh
+    img.bg-image#bgImg(src='/img/round234.jpg')
+    #pointContainer
+        p(style='color: red; font-weight: bold; font-size: 30px; margin-top: 5px; width:100%; text-align:center') PHẦN THI THỦ LĨNH TRÍ TUỆ
+        br
+        table.table.table-responsive-md#pointTable1
+            tbody
+                -for (var index = 1; index <= 6; index++)
+                    if (index > 5)
+                        td(style='width:20%; position:relative')
+                    else
+                        td(style='width:20%; position:relative')
+                            - var elementId = index < 10 ? '0' + index: index;
+                            img(src='/img/user/' + elementId + '.png')
+                            br
+                            span.badge.badge-pill.badge-success.userChoice(id='userChoice' + elementId style='display: inline-block; margin-left:6px;')
+                            span.badge.badge-pill.badge-primary.userPoint(id='userPoint' + elementId style='display: inline-block; margin-left:6px;')
+        table.table.table-responsive-md#pointTable2
+            tbody
+                -for (var index2 = 6; index2 <= 11; index2++)
+                    if (index2 > 10)
+                        td(style='width:20%; position:relative')
+                    else
+                        td(style='width:20%; position:relative')
+                            - var elementId2 = index2 < 10 ? '0' + index2: index2;
+                            img(src='/img/user/' + elementId2 + '.png')
+                            br
+                            span.badge.badge-pill.badge-success.userChoice(id='userChoice' + elementId2 style='display: inline-block; margin-left:6px;')
+                            span.badge.badge-pill.badge-primary.userPoint(id='userPoint' + elementId2 style='display: inline-block; margin-left:6px;')
+    #roundNameBox.col-md-10.col-sm-10
+        #round1.round
+            | PHẦN THI THỦ LĨNH TRÍ TUỆ
+            table#questionContainer
+                tbody
+                    tr
+                        td(colspan=2)
+                            #questionContent
+                    tr
+                        td(style='width:50%; font-size:20px; font-weight:normal')
+                            p#answerA
+                        td(style='width:50%; font-size:20px; font-weight:normal')
+                            p#answerB
+                    tr
+                        td(style='width:50%; font-size:20px; font-weight:normal')
+                            p#answerC
+                        td(style='width:50%; font-size:20px; font-weight:normal')
+                            p#answerD
+                    tr
+                        td(colspan=2)
+                            p#round1Result
+        #round2.round
+            | PHẦN THI THỦ LĨNH TÀI NĂNG
+            #userRound2Box(style="text-align: center;")
+                img.userRound2(style="width: 40%")
+                br
+                span.badge.badge-pill.badge-primary.pointUserRound2(style='display: inline-block; margin-left:6px;')
+        #round3.round
+            | PHẦN THI THỦ LĨNH NHẠY BÉN
+            .col-md-8.col-sm-12.rounded#userRound3Box
+                table.table.table-responsive-md#userTable
+                    tbody
+                        -for (var index = 1; index <= 4; index++)
+                            td(style='width:25%; position:relative')
+                                img(class="userRound3-"+index)
+                                span.badge.badge-pill.badge-primary(class='pointUserRound3-' + index style='display: inline-block; margin-left:6px;')
+        #round4.round
+            | PHẦN THI TÔI LÀ THỦ LĨNH
+            .col-md-8.col-sm-12.rounded#userRound4Box
+                table.table.table-responsive-md#userTable2
+                    tbody
+                        -for (var index2 = 1; index2 <= 4; index2++)
+                            if (index2 == 1 || index2 == 4)
+                                td(style='width:20%; position:relative')
+                            else
+                                td(style='width:25%; position:relative')
+                                    img(class="userRound4-"+index2)
+                                    span.badge.badge-pill.badge-primary(class='pointUserRound4' + index style='display: inline-block; margin-left:6px;')
+    .col-md-6.col-sm-10#tableCountDown(style="display:block")
+        table(style="margin:auto")
+            tbody
+                tr
+                    td
+                        img#minus(src="/img/minus.png" style='display:none; width:60px')
+                    td
+                        #countDown(style='display:block; width:auto')
+    audio#audioTick(src='/clock.wav' loop)

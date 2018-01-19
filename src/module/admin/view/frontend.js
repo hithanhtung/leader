@@ -59,12 +59,14 @@ $$.admin = {
             var currentQuestion = state.questions[userId],
                 currentAnswer = state.answers[userId],
                 hasAnswer = !(currentAnswer == undefined || currentAnswer == null),
-                answerText = hasAnswer ? ' => ' + currentAnswer.answer.toUpperCase() + currentAnswer.time : '';
+                answerText = hasAnswer ? ' => ' + currentAnswer.answer.toUpperCase() : '';
             var userQuestion = $('#userQuestion' + userId)
                 .attr('data-question', currentQuestion).html('Q' + currentQuestion + answerText);
+
             if (hasAnswer) {
+                $('#userDeltaPoint' + userId).val(currentAnswer.point);
                 userQuestion.attr('data-answer', currentAnswer.answer)
-                    .attr('data-answer-time', currentAnswer.time);
+                    .attr('data-point', currentAnswer.point);
             }
         });
     },
@@ -132,6 +134,24 @@ $$.admin = {
         });
     },
 
+    setAllPoints: function (value) {
+        $$.confirm('Set all point', 'Are you sure?', function () {
+            $.ajax({
+                type: 'put',
+                url: '/state/all_point/' + value,
+                success: function (result) {
+                    if (result.error) {
+                        alert('Admin: Error when set all points!')
+                    } else {
+                        $('.userDeltaPoint').val(value);
+                    }
+                },
+                error: function () {
+                    alert('Admin: Error when set all points!')
+                }
+            });
+        });
+    },
     setPoint: function (sender, delta) {
         var tr = $(sender).parent().parent(),
             username = tr.attr('data-username'),
@@ -228,6 +248,133 @@ $$.admin = {
         });
     },
 
+    renderRound2User: function (username) {
+        $('.button-start2').removeClass('badge-warning').addClass('badge-default');
+        $('#userRound2' + username).addClass('badge-warning');
+    },
+    getRound2User: function () {
+        $.ajax({
+            type: 'get',
+            url: '/state/round2User',
+            success: function (result) {
+                if (result.error) {
+                    alert('Admin: Error when get round2 user! ' + result.error)
+                } else {
+                    $$.admin.renderRound2User(result.round2User);
+                }
+            },
+            error: function () {
+                alert('Admin: Error when get round2 user!')
+            }
+        });
+    },
+    startRound2: function (username) {
+        $.ajax({
+            type: 'PUT',
+            url: '/state/round2User/' + username,
+            success: function (result) {
+                if (result.error) {
+                    alert('Error: ' + username + ' start round 2! ' + result.error);
+                } else {
+                    $$.admin.renderRound2User(username);
+                }
+            },
+            error: function () {
+                alert('Error: ' + username + ' start round 2!');
+            }
+        });
+    },
+    stopRound2: function () {
+        $.ajax({
+            type: 'DELETE',
+            url: '/state/round2User/',
+            success: function (result) {
+                if (result.error) {
+                    alert('Error: ' + username + ' start round 2! ' + result.error);
+                } else {
+                    $$.admin.renderRound2User(username);
+                }
+            },
+            error: function () {
+                alert('Error: ' + username + ' start round 2!');
+            }
+        });
+    },
+
+    renderRound3User: function (data) {
+        $('#round3User1').val(data.round3User1);
+        $('#round3User2').val(data.round3User2);
+        $('#round3User3').val(data.round3User3);
+        $('#round3User4').val(data.round3User4);
+    },
+    getRound3User: function () {
+        $.ajax({
+            type: 'get',
+            url: '/state/round3User',
+            success: function (result) {
+                if (result.error) {
+                    alert('Admin: Error when get round3 user! ' + result.error)
+                } else {
+                    $$.admin.renderRound3User(result);
+                }
+            },
+            error: function () {
+                alert('Admin: Error when get round3 user!')
+            }
+        });
+    },
+    setRound3User: function (index) {
+        var username = $('#round3User' + index).val();
+        $.ajax({
+            type: 'PUT',
+            url: '/state/round3User/' + index + '/' + username,
+            success: function (result) {
+                if (result.error) {
+                    alert('Error: ' + username + ' start round 3! ' + result.error);
+                }
+            },
+            error: function () {
+                alert('Error: ' + username + ' start round 3!');
+            }
+        });
+    },
+
+    renderRound4User: function (data) {
+        $('#round4User1').val(data.round4User1);
+        $('#round4User2').val(data.round4User2);
+    },
+    getRound4User: function () {
+        $.ajax({
+            type: 'get',
+            url: '/state/round4User',
+            success: function (result) {
+                if (result.error) {
+                    alert('Admin: Error when get round4 user! ' + result.error)
+                } else {
+                    $$.admin.renderRound4User(result);
+                }
+            },
+            error: function () {
+                alert('Admin: Error when get round4 user!')
+            }
+        });
+    },
+    setRound4User: function (index) {
+        var username = $('#round4User' + index).val();
+        $.ajax({
+            type: 'PUT',
+            url: '/state/round4User/' + index + '/' + username,
+            success: function (result) {
+                if (result.error) {
+                    alert('Error: ' + username + ' start round 4! ' + result.error);
+                }
+            },
+            error: function () {
+                alert('Error: ' + username + ' start round 4!');
+            }
+        });
+    },
+
     init: function () {
         $('#menuHome').append('<span class="sr-only">(current)</span>').parent().addClass('active');
         $$.admin.getScreen();
@@ -236,6 +383,9 @@ $$.admin = {
         $$.admin.getRound();
         $$.admin.getPoint();
         $$.admin.getTime();
+        $$.admin.getRound2User();
+        $$.admin.getRound3User();
+        $$.admin.getRound4User();
 
         $$.socket.on('screen', function (screen) {
             $$.admin.renderScreen(screen.toLowerCase());
@@ -247,10 +397,20 @@ $$.admin = {
             $$.admin.renderQuestionsState(questionsState);
         });
         $$.socket.on('point', function (points) {
+            console.log('point', points);
             $$.admin.renderPoint(points);
         });
         $$.socket.on('round1Do', function (data) {
             $('#round1QuestionIndex').html('Question: ' + data.action + ' ' + data.questionIndex);
+        });
+        $$.socket.on('round2User', function (data) {
+            $$.admin.renderRound2User(data.round2User);
+        });
+        $$.socket.on('round3User', function () {
+            $$.admin.getRound3User();
+        });
+        $$.socket.on('round4User', function () {
+            $$.admin.getRound4User();
         });
     }
 };

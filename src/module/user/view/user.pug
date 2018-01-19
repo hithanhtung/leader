@@ -1,7 +1,9 @@
 extends ../../../view/main
 append blockCss
-    +link('/css/md/user.min.css?v=#{version}')
+    +link('/css/md/user.min.css')
+    +link('/css/flipcountdown.min.css')
 append blockJavascript
+    +script('/js/flipcountdown.min.js')
     script
         if (user && user.role=='user')
             | $$.userId = '#{user.username}';
@@ -13,11 +15,11 @@ append blockMain
     table#user-box
         tbody
             tr
-                td(align='left')
+                td(align='left' style='width:25%')
                     img#userAvatar
                 td(align='center' colspan=2)
                     #countdown1
-                td(align='right')
+                td(align='right' style='width:25%')
                     #userPoint
             tr
                 td(colspan=4)
@@ -33,5 +35,7 @@ append blockMain
                 td(style='width:50%' colspan=2)
                     p#answerD(data-value='d' onclick='$$.user.round1Select(this)')
             tr
-                td(align='center' colspan=4)
+                td
+                    #userDeltaPoint
+                td(align='center' colspan=3)
                     #questionResult

@@ -4,8 +4,11 @@ $$.aQuestion = {
         if (row !== null) {
             row = $$.getRow(row, level);
             $$.aQuestion.questionId = this.getRowId(row);
+            var idx = row.attr('data-idx'),
+                content = $$.aQuestion.questions[idx].content;
+
             $('#qClip').val(row.attr('data-clipUrl'));
-            $('#qContent').froalaEditor('html.set', row.attr('data-content'));
+            $('#qContent').froalaEditor('html.set', content);
             $('#qAnswerA').val(row.attr('data-answerA'));
             $('#qAnswerB').val(row.attr('data-answerB'));
             $('#qAnswerC').val(row.attr('data-answerC'));
@@ -55,6 +58,7 @@ $$.aQuestion = {
             type: 'get',
             url: '/adminQuestion/getAll',
             success: function (questions) {
+                $$.aQuestion.questions = questions;
                 $$.aQuestion.render(questions);
             },
             error: function () {
@@ -68,7 +72,7 @@ $$.aQuestion = {
             for (i = 0; i < questions.length; i++) {
                 var qs = questions[i];
                 table.append(
-                    '<div class="card" id="questionId' + qs._id + '" data-result="'+qs.result + '" data-content="' + qs.content + '" data-answerA="' + qs.answerA + '" data-answerB="' + qs.answerB + '" data-answerC="' + qs.answerC + '" data-answerD="' + qs.answerD + '" data-hint="' + qs.hint + '" data-clipUrl="' + qs.clipUrl + '">' +
+                    '<div class="card" data-idx="'+i+'" id="questionId' + qs._id + '" data-result="'+qs.result + '" data-answerA="' + qs.answerA + '" data-answerB="' + qs.answerB + '" data-answerC="' + qs.answerC + '" data-answerD="' + qs.answerD + '" data-hint="' + qs.hint + '" data-clipUrl="' + qs.clipUrl + '">' +
                     '   <div id="heading' + (i + 1) + '" role="tab" class="card-header">' +
                     '       <a data-toggle="collapse" data-parent="#question" href="#collapse' + (i + 1) + '" aria-expanded="true" aria-controls="collapse' + (i + 1) + '">Question ' + qs.index + '</a>' +
                     '       <a href="#">' +
@@ -109,7 +113,7 @@ $$.aQuestion = {
         var question = {
             id: $$.aQuestion.questionId,
             clipUrl: $('#qClip').val().trim(),
-            content: $('#qContent').val().trim(),
+            content: $('#qContent').val(),
             answerA: $('#qAnswerA').val().trim(),
             answerB: $('#qAnswerB').val().trim(),
             answerC: $('#qAnswerC').val().trim(),
@@ -117,6 +121,7 @@ $$.aQuestion = {
             result: $('#qResult input:radio[name=result]:checked').val(),
             hint: $('#qHint').val().trim(),
         };
+        console.log($('#qContent').val());
         if (question.content == '') {
             $('#qsModalError').html('Question content can not empty !');
             return;

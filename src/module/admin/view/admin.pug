@@ -26,9 +26,6 @@ append blockMain
         .float-left(style='display:inline-flex')
             | Screen:&nbsp;
             .btn-group(data-toggle='buttons')
-                label.btn.btn-primary(onclick='$$.admin.selectScreen("empty"); return false')
-                    input.round1Screen#round1ScreenEmpty(type='radio' name='options' autocomplete='off')
-                    | Empty
                 label.btn.btn-primary(onclick='$$.admin.selectScreen("point"); return false')
                     input.round1Screen#round1ScreenPoint(type='radio' name='options' autocomplete='off')
                     | Point
@@ -46,7 +43,11 @@ append blockMain
                     a.dropdown-item(href='#' data-value=3 onclick='$$.admin.selectRound(this); return false') Thủ lĩnh nhạy bén
                     a.dropdown-item(href='#' data-value=4 onclick='$$.admin.selectRound(this); return false') Tôi là thủ lĩnh
                     a.dropdown-item(href='#' data-value=5 onclick='$$.admin.selectRound(this); return false') Kết thúc
-        span.badge.badge-pill.badge-default.float-right(id='userStatus0') MC
+        span.badge.badge-pill.badge-default.float-right#userStatus0 MC
+        a(href='#' onclick='$$.admin.setAllPoints(0); return false')
+            span.badge.badge-pill.badge-danger.float-right(style='margin-right:6px') Clear point
+        a(href='#' onclick='$$.admin.setAllPoints(10); return false')
+            span.badge.badge-pill.badge-success.float-right(style='margin-right:6px') Set 10 point
         table.table.table-bordered.table-sm#userTable
             tbody
                 - for (var index = 1; index <= 10; index++)
@@ -58,6 +59,8 @@ append blockMain
                         span.badge.badge-pill.badge-default(id='userStatus' + index style='position:absolute; left:6px; top:6px') #{index}
                         span.badge.badge-pill.badge-primary(id='userPoint' + elementId style='position:absolute; left:6px; top:26px')
                         span.badge.badge-pill.badge-info(id='userQuestion' + elementId style='position:absolute; left:6px; top:46px')
+                        a(href='#' onclick='$$.admin.startRound2("' + elementId + '"); return false' style='position:absolute; right:6px; top:6px')
+                            span.badge.badge-pill.badge-default.button-start2(id='userRound2' + elementId) Round 2
                         .point-box
                             table
                                 tbody
@@ -66,7 +69,7 @@ append blockMain
                                             a.text-danger(href='#' onclick='$$.admin.setPoint(this, -1); return false')
                                                 i.material-icons do_not_disturb_on
                                         td(style='width:100%')
-                                            input.form-control(type='text' style='text-align:center' value=10)
+                                            input.form-control.userDeltaPoint(type='text' id='userDeltaPoint'+elementId style='text-align:center' value=10)
                                         td(style='width:auto')
                                             a.text-primary(href='#' onclick='$$.admin.setPoint(this, +1); return false')
                                                 i.material-icons add_circle
@@ -100,6 +103,10 @@ append blockMain
             #heading2.card-header(role='tab')
                 a.collapsed(data-toggle='collapse' data-parent='#adminContainer' href='#collapse2' aria-expanded='false' aria-controls='collapse2')
                     | THỦ LĨNH TÀI NĂNG
+                a(href='#' onclick='$$.admin.stopRound2(); return false')
+                    span.badge.badge-pill.badge-danger.float-right Stop round 2
+                a(href='#' onclick='$$.admin.startRound2("0"); return false')
+                    span.badge.badge-pill.badge-default.float-right Clear round 2
             #collapse2.collapse(role='tabpanel' aria-labelledby='heading2')
                 .card-block
                     .float-left.time-box
@@ -119,7 +126,20 @@ append blockMain
                         input#roundTime3.form-control(type='text')
                         a.text-primary(href='#' onclick='$$.admin.setTime(3); return false')
                             i.material-icons save
-                    | <br>TODO 3
+                    table.table.table-bordered.table-sm#round3Table
+                        tbody
+                            tr
+                                - for (var i = 1; i <= 4; i++)
+                                    td(style='width:25%; text-align:center')
+                                        .point-box
+                                            table
+                                                tbody
+                                                    tr(data-username=elementId)
+                                                        td(style='width:100%')
+                                                            input.form-control(type='text' id='round3User'+i style='text-align:center')
+                                                        td(style='width:auto')
+                                                            a.text-primary(href='#' onclick='$$.admin.setRound3User('+i+'); return false')
+                                                                i.material-icons save
         .card
             #heading4.card-header(role='tab')
                 a.collapsed(data-toggle='collapse' data-parent='#adminContainer' href='#collapse4' aria-expanded='false' aria-controls='collapse4')
@@ -131,4 +151,17 @@ append blockMain
                         input#roundTime4.form-control(type='text')
                         a.text-primary(href='#' onclick='$$.admin.setTime(4); return false')
                             i.material-icons save
-                    | <br>TODO 4
+                    table.table.table-bordered.table-sm#round4Table
+                        tbody
+                            tr
+                                - for (var i = 1; i <= 2; i++)
+                                    td(style='width:25%; text-align:center')
+                                        .point-box
+                                            table
+                                                tbody
+                                                    tr(data-username=elementId)
+                                                        td(style='width:100%')
+                                                            input.form-control(type='text' id='round4User' + i style='text-align:center')
+                                                        td(style='width:auto')
+                                                            a.text-primary(href='#' onclick='$$.admin.setRound4User(' + i + '); return false')
+                                                                i.material-icons save

@@ -28,10 +28,10 @@ module.exports = (app, moduleViewPath) => {
         }
     });
 
-    app.put('/user/round1/answer/:questionIndex/:answer', (req, res) => {
+    app.put('/user/round1/answer/:questionIndex/:answer/:point', (req, res) => {
         var now = (new Date()).getTime(),
             options = app.defaultOptions(req),
-            questionIndex = req.params.questionIndex,
+            point = req.params.point,
             answer = req.params.answer;
         if (!(options.user && options.user.role == 'user')) {
             res.send({error: 'Insufficient privileges!'});
@@ -42,12 +42,12 @@ module.exports = (app, moduleViewPath) => {
         } else {
             var currentAnswer = app.answers[options.user.username];
             if (currentAnswer == undefined || currentAnswer == null || currentAnswer.answer != answer) {
-                app.answers[options.user.username] = {answer: answer, time: now};
-                res.send({time: now});
+                app.answers[options.user.username] = {answer: answer, point: point};
+                res.send({point: point});
 
                 app.io.emit('questions_state', {questions: app.questions, answers: app.answers});
             } else {
-                res.send({time: currentAnswer.time});
+                res.send({point: point});
             }
         }
     });
