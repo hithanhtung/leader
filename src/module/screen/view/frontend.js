@@ -21,9 +21,11 @@ $$.screen = {
     },
 
     playAudioTick: function () {
+        var audioTick = document.getElementById('audioTick');
         audioTick.play();
     },
     stopAudioTick: function () {
+        var audioTick = document.getElementById('audioTick');
         audioTick.pause();
         audioTick.currentTime = 0;
     },
@@ -55,7 +57,6 @@ $$.screen = {
             }
             console.log(result);
 
-            var audioTick = document.getElementById('audioTick');
             if (result.action == 'show') {
                 $$.screen.roundTime = Math.round(result.remainTime / 1000);
                 $$.screen.status = 'stop';
