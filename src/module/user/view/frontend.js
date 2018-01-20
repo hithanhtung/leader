@@ -1,6 +1,7 @@
 $$.user = {
     roundTime: 0,
     status: 'stop',
+    selectedColor: 'deepskyblue',
 
     renderPoint: function (points) {
         $('#userPoint').html(points[$$.userId]);
@@ -22,19 +23,16 @@ $$.user = {
         if (data.action == 'send') {
             $$.user.question = data.question;
             $('#questionContent').html('').css('display', 'none');
-            $('#answerA').html('').css('display', 'none').css('background-color', '#f5f5f5');
-            $('#answerB').html('').css('display', 'none').css('background-color', '#f5f5f5');
-            $('#answerC').html('').css('display', 'none').css('background-color', '#f5f5f5');
-            $('#answerD').html('').css('display', 'none').css('background-color', '#f5f5f5');
+            $('.answer').html('').css('display', 'none').css('background-color', '#f5f5f5').css('color', 'red');
             $('#questionResult').css('display', 'none');
             $('#userDeltaPoint').css('display', 'none');
             $('#countdown1').css('display', 'none');
         } else if ($$.user.question.index == data.questionIndex) {
             $('#questionContent').html($$.user.question.content).css('display', 'block');
-            $('#answerA').html('A. ' + $$.user.question.answerA).css('display', 'block');
-            $('#answerB').html('B. ' + $$.user.question.answerB).css('display', 'block');
-            $('#answerC').html('C. ' + $$.user.question.answerC).css('display', 'block');
-            $('#answerD').html('D. ' + $$.user.question.answerD).css('display', 'block');
+            $('#answerA').html('A. ' + $$.user.question.answerA).css('display', 'block').css('color', 'red');
+            $('#answerB').html('B. ' + $$.user.question.answerB).css('display', 'block').css('color', 'red');
+            $('#answerC').html('C. ' + $$.user.question.answerC).css('display', 'block').css('color', 'red');
+            $('#answerD').html('D. ' + $$.user.question.answerD).css('display', 'block').css('color', 'red');
 
             $('#questionResult').css('display', data.action == 'result' ? 'block' : 'none')
                 .html(data.answer ? data.answer.answer.toUpperCase() : '');
@@ -43,7 +41,7 @@ $$.user = {
             $('#countdown1').css('display', 'block');
 
             if (data.answer) {
-                $('#answer' + data.answer.answer.toUpperCase()).css('background-color', 'yellow');
+                $('#answer' + data.answer.answer.toUpperCase()).css('background-color', $$.screen.selectedColor).css('color', 'white');
             }
 
             if (data.action == 'show') {
@@ -125,11 +123,8 @@ $$.user = {
                 if (result.error) {
                     $$.alert('User: ' + result.error + '!');
                 } else {
-                    $('#answerA').css('background-color', '#f5f5f5');
-                    $('#answerB').css('background-color', '#f5f5f5');
-                    $('#answerC').css('background-color', '#f5f5f5');
-                    $('#answerD').css('background-color', '#f5f5f5');
-                    sender.css('background-color', 'yellow');
+                    $('.answer').css('background-color', '#f5f5f5').css('color', 'red');
+                    sender.css('background-color', $$.user.selectedColor).css('color', 'white');
                     //TODO: show result.point
                 }
             },

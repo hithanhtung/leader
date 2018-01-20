@@ -46,6 +46,7 @@ module.exports = (app, moduleViewPath) => {
                 res.send({point: point});
 
                 app.io.emit('questions_state', {questions: app.questions, answers: app.answers});
+                app.io.emit('user_choice', {user: options.user.username, answer: answer, point: point});
             } else {
                 res.send({point: point});
             }

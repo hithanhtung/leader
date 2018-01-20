@@ -182,7 +182,7 @@ module.exports = (app, moduleViewPath) => {
         }
     });
     app.delete('/state/round2User', (req, res) => {
-//TODO
+        //TODO
     });
 
     app.get('/state/round3User', (req, res) => {
@@ -352,8 +352,7 @@ module.exports = (app, moduleViewPath) => {
                             setTimeout(() => {
                                 var stopAction = 'stop';
                                 app.model.Setting.update({key: 'round1Action', value: stopAction}, (error) => {
-                                    //TODO: action => stop
-                                    console.log('Timeout', 'huhuhu');
+                                    // action => stop
                                     app.io.emit('round1Do', {
                                         action: stopAction,
                                         questionIndex: questionIndex

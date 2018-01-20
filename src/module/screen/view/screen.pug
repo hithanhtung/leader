@@ -45,14 +45,14 @@ append blockMain
                             #questionContent
                     tr
                         td(style='width:50%; font-size:20px; font-weight:normal')
-                            p#answerA
+                            p.answer#answerA
                         td(style='width:50%; font-size:20px; font-weight:normal')
-                            p#answerB
+                            p.answer#answerB
                     tr
                         td(style='width:50%; font-size:20px; font-weight:normal')
-                            p#answerC
+                            p.answer#answerC
                         td(style='width:50%; font-size:20px; font-weight:normal')
-                            p#answerD
+                            p.answer#answerD
                     tr
                         td(colspan=2)
                             p#round1Result
@@ -82,7 +82,7 @@ append blockMain
                             else
                                 td(style='width:25%; position:relative')
                                     img(class="userRound4-"+index2)
-                                    span.badge.badge-pill.badge-primary(class='pointUserRound4' + index style='display: inline-block; margin-left:6px;')
+                                    span.badge.badge-pill.badge-primary(class='pointUserRound4-' + index2 style='display: inline-block; margin-left:6px;')
     .col-md-6.col-sm-10#tableCountDown(style="display:block")
         table(style="margin:auto")
             tbody
@@ -91,4 +91,8 @@ append blockMain
                         img#minus(src="/img/minus.png" style='display:none; width:60px')
                     td
                         #countDown(style='display:block; width:auto')
-    audio#audioTick(src='/clock.wav' loop)
+    audio#audioTick(src='/sound/clock.wav' loop)
+    audio#audioAlarm(src='/sound/end.wav')
+    -for (var index = 1; index <= 10; index++)
+        - var elementSoundId = index < 10? '0'+index:index;
+        audio(src='/sound/choice.wav' id='audioChoice' + elementSoundId)

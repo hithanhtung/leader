@@ -1,6 +1,8 @@
 $$.screen = {
     roundTime: 0,
-    status: 'start',                //stop , start , reset
+    status: 'stop',                //stop , start
+    selectedColor: 'deepskyblue',
+
     renderPoint: function (points) {
         Object.keys(points).forEach(function eachKey(userId) {
             $('#userRound' + $$.screen.roundIndex + 'Box #userPoint' + userId).html('Point: ' + points[userId]);
@@ -29,16 +31,17 @@ $$.screen = {
         audioTick.pause();
         audioTick.currentTime = 0;
     },
+    playAudioAlarm: function () {
+        var audioAlarm = document.getElementById('audioAlarm');
+        audioAlarm.play();
+    },
 
     renderRound1: function (result) {
         if (result.action == 'send') {
             $$.screen.question = result.question;
             $('#questionContainer').css('display', 'block');
             $('#questionContent').html('').css('display', 'none');
-            $('#answerA').html('').css('display', 'none').css('background-color', '#f5f5f5');
-            $('#answerB').html('').css('display', 'none').css('background-color', '#f5f5f5');
-            $('#answerC').html('').css('display', 'none').css('background-color', '#f5f5f5');
-            $('#answerD').html('').css('display', 'none').css('background-color', '#f5f5f5');
+            $('.answer').html('').css('display', 'none').css('background-color', '#f5f5f5').css('color', 'red');
             $('#questionResult').css('display', 'none');
             $('#countDown').css('display', 'none');
         } else if ($$.screen.question.index == result.questionIndex) {
@@ -53,7 +56,7 @@ $$.screen = {
             $('#countDown').css('display', 'block');
 
             if (result.result) {
-                $('#answer' + result.result.toUpperCase()).css('background-color', 'yellow');
+                $('#answer' + result.result.toUpperCase()).css('background-color', $$.screen.selectedColor).css('color', 'white');
             }
             console.log(result);
 
@@ -63,9 +66,9 @@ $$.screen = {
                 $$.screen.stopAudioTick();
             } else if (result.action == 'start') {
                 $$.screen.roundTime = Math.round(result.remainTime / 1000);
+                $$.screen.status = 'start';
                 $$.screen.playAudioTick();
             } else {
-                $$.screen.roundTime = 0;
                 $$.screen.status = 'stop';
                 $$.screen.stopAudioTick();
             }
@@ -87,6 +90,7 @@ $$.screen = {
 
     renderRound2: function (round2User) {
         if (round2User != '') {
+            $('#countDown').css('display', 'block');
             $('.userRound2').attr('src', '/img/user/' + round2User + '.png');
             $('.pointUserRound2').attr('id', 'userPoint' + round2User);
             $$.screen.getPoint();
@@ -110,7 +114,30 @@ $$.screen = {
     },
 
     renderRound3: function (round3User) {
-        //TODO
+        if (round3User != '') {
+            $('#countDown').css('display', 'block');
+            if (round3User.round3User1 != '') {
+                $('.userRound3-1').attr('src', '/img/user/' + round3User.round3User1 + '.png');
+                $('.pointUserRound3-1').attr('id', 'userPoint' + round3User.round3User1);
+            }
+            ;
+            if (round3User.round3User2 != '') {
+                $('.userRound3-2').attr('src', '/img/user/' + round3User.round3User2 + '.png');
+                $('.pointUserRound3-2').attr('id', 'userPoint' + round3User.round3User2);
+            }
+            ;
+            if (round3User.round3User3 != '') {
+                $('.userRound3-3').attr('src', '/img/user/' + round3User.round3User3 + '.png');
+                $('.pointUserRound3-3').attr('id', 'userPoint' + round3User.round3User3);
+            }
+            ;
+            if (round3User.round3User4 != '') {
+                $('.userRound3-4').attr('src', '/img/user/' + round3User.round3User4 + '.png');
+                $('.pointUserRound3-4').attr('id', 'userPoint' + round3User.round3User4);
+            }
+            ;
+            $$.screen.getPoint();
+        }
     },
     getRound3: function () {
         $.ajax({
@@ -120,7 +147,7 @@ $$.screen = {
                 if (result.error) {
                     alert('Screen: Error when get round3 user! ' + result.error)
                 } else {
-                    $$.screen.renderRound3(result.round3User);
+                    $$.screen.renderRound3(result);
                 }
             },
             error: function () {
@@ -130,7 +157,20 @@ $$.screen = {
     },
 
     renderRound4: function (round4User) {
-        //TODO
+        if (round4User != '') {
+            console.log(round4User);
+            if (round4User.round4User1 != '') {
+                $('.userRound4-2').attr('src', '/img/user/' + round4User.round4User1 + '.png');
+                $('.pointUserRound4-2').attr('id', 'userPoint' + round4User.round4User1);
+            }
+            ;
+            if (round4User.round4User2 != '') {
+                $('.userRound4-3').attr('src', '/img/user/' + round4User.round4User2 + '.png');
+                $('.pointUserRound4-3').attr('id', 'userPoint' + round4User.round4User2);
+            }
+            ;
+            $$.screen.getPoint();
+        }
     },
     getRound4: function () {
         $.ajax({
@@ -140,7 +180,7 @@ $$.screen = {
                 if (result.error) {
                     alert('Screen: Error when get round4 user! ' + result.error)
                 } else {
-                    $$.screen.renderRound3(result.round4User);
+                    $$.screen.renderRound4(result);
                 }
             },
             error: function () {
@@ -187,9 +227,10 @@ $$.screen = {
             type: 'get',
             url: '/state/time',
             success: function (result) {
-                // if (1 <= roundIndex && roundIndex <= 4) {
-                //     $$.screen.roundTime = result['round' + roundIndex];
-                // }
+                if (2 <= roundIndex && roundIndex <= 4) {
+                    $$.screen.status = 'stop';
+                    $$.screen.roundTime = result['round' + roundIndex];
+                }
             },
             error: function () {
                 alert('Screen: Error when get round time setting!')
@@ -202,6 +243,7 @@ $$.screen = {
         $('#tableCountDown').css('display', 'none');
         $('#pointContainer').css('display', 'none');
         if (screen == 'question') {
+            $('#tableCountDown').css('display', 'block');
             $$.screen.getRound();
         } else {
             $('#pointContainer').css('display', 'block');
@@ -260,6 +302,9 @@ $$.screen = {
                     result = nol(min) + ' ' + nol(sec);
                 if ($$.screen.roundTime == 0 && $$.screen.roundIndex != undefined) {
                     if ($$.screen.roundIndex == 1 || $$.screen.roundIndex == 3 || $$.screen.roundIndex == 4) {
+                        if ($$.screen.status == 'start') {
+                            $$.screen.playAudioAlarm();
+                        }
                         $$.screen.status = 'stop';
                         $$.screen.stopAudioTick();
                     } else {
@@ -288,6 +333,15 @@ $$.screen = {
         });
         $$.socket.on('round2User', function (round2User) {
             $$.screen.renderRound2(round2User.round2User);
+        });
+        $$.socket.on('questions_state', function (result) {
+            console.log(result);
+        });
+        $$.socket.on('user_choice', function (result) {
+            if ($$.screen.roundIndex == 1 && $$.screen.status == 'start') {
+                var audio = document.getElementById('audioChoice' + result.user);
+                audio.play();
+            }
         });
     }
 };
