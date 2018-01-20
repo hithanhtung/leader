@@ -83,6 +83,21 @@ $$.admin = {
         });
     },
 
+    getRound1State: function () {
+        $.ajax({
+            type: 'GET',
+            url: '/admin/round1/state',
+            success: function (data) {
+                var resultText = (data.action == 'stop' || data.action == 'result') && data.question ?
+                ' => ' + data.question.result.toUpperCase() : '';
+                $('#round1QuestionIndex').html('Question: ' + data.action + ' ' + data.questionIndex + resultText);
+            },
+            error: function () {
+                alert('Admin: Error when get round 1 state!')
+            }
+        });
+    },
+
     selectRound: function (sender) {
         sender = $(sender);
         $$.confirm('Change round', 'Are you sure you want to change round "<b>' + sender.html() + '</b>"?', function () {
@@ -116,16 +131,7 @@ $$.admin = {
                 menuRound.attr('data-value', result.round).html(dropdownMenus.html());
 
                 if (result.round == 1) {
-                    $.ajax({
-                        type: 'GET',
-                        url: '/admin/round1/state',
-                        success: function (data) {
-                            $('#round1QuestionIndex').html('Question: ' + data.action + ' ' + data.questionIndex);
-                        },
-                        error: function () {
-                            alert('Error: ' + $$.capitalizeFirstLetter(action) + ' question ' + questionIndex + '!');
-                        }
-                    });
+                    $$.admin.getRound1State();
                 }
             },
             error: function () {
@@ -134,6 +140,9 @@ $$.admin = {
         });
     },
 
+    addAllPoints: function () {
+        //TODO:
+    },
     setAllPoints: function (value) {
         $$.confirm('Set all point', 'Are you sure?', function () {
             $.ajax({
@@ -401,7 +410,8 @@ $$.admin = {
             $$.admin.renderPoint(points);
         });
         $$.socket.on('round1Do', function (data) {
-            $('#round1QuestionIndex').html('Question: ' + data.action + ' ' + data.questionIndex);
+            $$.admin.getRound1State();
+            // $('#round1QuestionIndex').html('Question: ' + data.action + ' ' + data.questionIndex + resultText);
         });
         $$.socket.on('round2User', function (data) {
             $$.admin.renderRound2User(data.round2User);

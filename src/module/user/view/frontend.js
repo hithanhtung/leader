@@ -4,7 +4,7 @@ $$.user = {
     selectedColor: 'deepskyblue',
 
     renderPoint: function (points) {
-        $('#userPoint').html(points[$$.userId]);
+        $('#userPoint').html('Điểm: ' + points[$$.userId]);
     },
     getPoint: function () {
         $.ajax({
@@ -24,8 +24,8 @@ $$.user = {
             $$.user.question = data.question;
             $('#questionContent').html('').css('display', 'none');
             $('.answer').html('').css('display', 'none').css('background-color', '#f5f5f5').css('color', 'red');
-            $('#questionResult').css('display', 'none');
-            $('#userDeltaPoint').css('display', 'none');
+            $('#questionResult').html('');
+            $('#userDeltaPoint').html('');
             $('#countdown1').css('display', 'none');
         } else if ($$.user.question.index == data.questionIndex) {
             $('#questionContent').html($$.user.question.content).css('display', 'block');
@@ -33,15 +33,21 @@ $$.user = {
             $('#answerB').html('B. ' + $$.user.question.answerB).css('display', 'block').css('color', 'red');
             $('#answerC').html('C. ' + $$.user.question.answerC).css('display', 'block').css('color', 'red');
             $('#answerD').html('D. ' + $$.user.question.answerD).css('display', 'block').css('color', 'red');
-
-            $('#questionResult').css('display', data.action == 'result' ? 'block' : 'none')
-                .html(data.answer ? data.answer.answer.toUpperCase() : '');
-            $('#userDeltaPoint').css('display', data.action == 'result' ? 'block' : 'none')
-                .html(data.answer ? data.answer.point : '');
             $('#countdown1').css('display', 'block');
 
             if (data.answer) {
-                $('#answer' + data.answer.answer.toUpperCase()).css('background-color', $$.screen.selectedColor).css('color', 'white');
+                $('#answer' + data.answer.answer.toUpperCase())
+                    .css({'background-color': $$.user.selectedColor, 'color': 'white'});
+                $('#userDeltaPoint').html('Bạn lựa chọn ở giây thứ ' + data.answer.point + '.');
+                if (data.result) {
+                    var resultText = data.result.toLowerCase() == data.answer.answer.toLowerCase() ? 'ĐÚNG' : 'SAI';
+                    $('#questionResult').html('Bạn đã lựa chọn <font color="red" size="5">' + resultText +
+                        '</font>. Đáp án chính xác là <font color="red" size="5">' + data.result.toUpperCase() + '</font>.');
+                } else {
+                    $('#questionResult').html('');
+                }
+            } else {
+                $('#userDeltaPoint').html('');
             }
 
             if (data.action == 'show') {
@@ -123,9 +129,12 @@ $$.user = {
                 if (result.error) {
                     $$.alert('User: ' + result.error + '!');
                 } else {
+                    $('#userDeltaPoint').html('Bạn lựa chọn ở giây thứ ' + result.point + '.');
                     $('.answer').css('background-color', '#f5f5f5').css('color', 'red');
-                    sender.css('background-color', $$.user.selectedColor).css('color', 'white');
-                    //TODO: show result.point
+                    sender.css({
+                        'background-color': $$.user.selectedColor,
+                        'color': 'white'
+                    });
                 }
             },
             error: function () {
@@ -139,6 +148,7 @@ $$.user = {
         $('#userAvatar').attr('src', '/img/user/' + $$.userId + '.png');
 
         $('#countdown1').flipcountdown({
+            size: 'lg',
             tick: function () {
                 var nol = function (h) {
                     return (h > 9 || h < -9) ? h : '0' + h;
@@ -149,7 +159,7 @@ $$.user = {
                 }
                 if ($$.user.roundTime <= 0) {
                     $$.user.roundTime = 0;
-                    $$.user.status == 'stop'
+                    $$.user.status = 'stop'
                 }
                 return nol($$.user.roundTime);
             }

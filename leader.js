@@ -32,7 +32,7 @@ app.loadModels();
 app.loadModules();
 
 // Launch website =============================================================
-var port = process.env.PORT || 8052;
+var port = process.env.PORT || 8000;
 http.listen(port, () => {
     console.log('The magic happens on http://localhost:%d.', port);
 });

@@ -10,8 +10,6 @@ append blockJavascript
         include ./bin/frontend.min.js
 append blockMain
     img.bg-image(src='/img/round0.png')
-    a.float-right.text-primary(href='#' onclick='window.location.reload(); return false' style='margin:10px; z-index:1000')
-        i.material-icons.large loop
     table#user-box
         tbody
             tr
@@ -35,7 +33,6 @@ append blockMain
                 td(style='width:50%' colspan=2)
                     p.answer#answerD(data-value='d' onclick='$$.user.round1Select(this)')
             tr
-                td
-                    #userDeltaPoint
-                td(align='center' colspan=3)
-                    #questionResult
+                td(align='center' colspan=4)
+                    p#userDeltaPoint
+                    p#questionResult

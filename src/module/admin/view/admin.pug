@@ -45,9 +45,11 @@ append blockMain
                     a.dropdown-item(href='#' data-value=5 onclick='$$.admin.selectRound(this); return false') Kết thúc
         span.badge.badge-pill.badge-default.float-right#userStatus0 MC
         a(href='#' onclick='$$.admin.setAllPoints(0); return false')
-            span.badge.badge-pill.badge-danger.float-right(style='margin-right:6px') Clear point
+            span.badge.badge-pill.badge-default.float-right(style='margin-right:6px') Clear point
         a(href='#' onclick='$$.admin.setAllPoints(10); return false')
-            span.badge.badge-pill.badge-success.float-right(style='margin-right:6px') Set 10 point
+            span.badge.badge-pill.badge-success.float-right(style='margin-right:6px') Set 10 points
+        a(href='#' onclick='$$.admin.addAllPoints(); return false')
+            span.badge.badge-pill.badge-danger.float-right(style='margin-right:6px') Add all points
         table.table.table-bordered.table-sm#userTable
             tbody
                 - for (var index = 1; index <= 10; index++)
@@ -69,7 +71,7 @@ append blockMain
                                             a.text-danger(href='#' onclick='$$.admin.setPoint(this, -1); return false')
                                                 i.material-icons do_not_disturb_on
                                         td(style='width:100%')
-                                            input.form-control.userDeltaPoint(type='text' id='userDeltaPoint'+elementId style='text-align:center' value=10)
+                                            input.form-control.userDeltaPoint(type='text' id='userDeltaPoint'+elementId style='text-align:center' value=0)
                                         td(style='width:auto')
                                             a.text-primary(href='#' onclick='$$.admin.setPoint(this, +1); return false')
                                                 i.material-icons add_circle

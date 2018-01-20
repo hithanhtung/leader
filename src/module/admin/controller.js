@@ -169,7 +169,6 @@ module.exports = (app, moduleViewPath) => {
                         if (error == null) {
                             app.round2Deadline = new Date().getTime() + app.roundTime * 1000;
                             app.io.emit('round2User', {round2User: username});
-                            //TODO: SetTimeout
                         }
                         res.send({error: error});
                     });

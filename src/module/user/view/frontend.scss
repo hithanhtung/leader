@@ -14,7 +14,12 @@ $pointFontSize: 45px;
   height: $avatarHeight;
 }
 
-#userPoint, #userDeltaPoint, #questionResult {
+#userPoint, #questionResult {
+  white-space: nowrap;
+  width: 100% !important;
+}
+
+#userPoint {
   text-align: center;
   width: $avatarHeight;
   height: $avatarHeight;
@@ -23,10 +28,6 @@ $pointFontSize: 45px;
   font-size: $pointFontSize;
   line-height: $avatarHeight;
   background-color: $userBackcolor;
-}
-
-#questionResult {
-  display: none;
 }
 
 #user-box {
